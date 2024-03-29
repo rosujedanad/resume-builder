@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Loading from "./Loading";
+import { googleLogout } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [fullName, setFullName] = useState("");
@@ -23,12 +25,17 @@ const Home = () => {
   if (loading) {
     return <Loading />;
   }
+  const navigate = useNavigate();
+  const logOut = () => {
+    googleLogout();
+    navigate("/");
+  };
   return (
     <div className="app">
       <div className="detbox">
         <div className="boxdet"></div>
         <div className="boxmain">
-          <h1 className="Mtitle">Candidate Credentials</h1>
+          <h1 className="Mtitle">Candidate Credentials</h1><button className="logout" onClick={logOut}>Logout</button>
           <p className="desc">
             Please enter your credentials to generate your resume.
           </p>
