@@ -47,14 +47,17 @@ function Signin() {
     <div className={styles.container}>
       <div className={styles.form_container}>
         <div className={styles.left}>
-          <img className={styles.img} src="./images/green_illustration.jpeg" alt="login"/>
+          <img className={styles.img} src="../../src/assets/green_illustration.jpeg" alt="login"/>
         </div>
         <div className={styles.right}>
-          <h2 className={styles.from_heading}>Hey there!</h2>
-          <p className={styles.text1}>Welcome</p>
+          <h2 className={styles.from_heading}>ResuMate</h2>
+          <p className={styles.text1}>Hey there!</p>
           <p className={styles.text}> You're just one step away from crafting your professional resume.</p>
           <p className={styles.text2}>Sign in with</p>
-          <button onClick={login}>Sign in with Google  </button>
+          <button onClick={login} className={styles.google_btn}>
+          <img src="../../src/assets/google.png" alt="Google Logo" />
+          Google  
+          </button>
         </div>
       </div>
     </div>
