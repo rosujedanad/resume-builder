@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const config = require('./config/config');
 const connectToDatabase = require('./config/db');
-const exampleRoutes = require('./routes/exampleRoutes');
+const Routes = require('./routes/routes');
 
 const app = express();
 
@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 // Define your routes here
-app.use('/', exampleRoutes);
+app.use('/', Routes);
 
 // Start the server
 app.listen(config.port, () => {

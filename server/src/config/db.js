@@ -10,7 +10,9 @@ const connectToDatabase = async () => {
     }
     
     console.log('using new database connection');
-    const db = await mongoose.connect(config.mongodb_uri,);
+    const db = await mongoose.connect(config.mongodb_uri,{
+        dbName: 'resume-builder',
+    });
     
     isConnected = db.connections[0].readyState;
     }
