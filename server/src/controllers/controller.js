@@ -1,22 +1,22 @@
 // Import any required services or models here
-const exampleService = require('../services/exampleService');
+const Service = require('../services/service');
 
 // Define your controller methods
 exports.getExamples = async (req, res) => {
   try {
-    const examples = await exampleService.getExamples();
+    const examples = await Service.getExamples();
     res.json(examples);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-exports.createExample = async (req, res) => {
+exports.signIn = async (req, res) => {
   try {
     console.log(req.body);
-    const { name } = req.body;
-    console.log(name);
-    const newExample = await exampleService.createExample(name);
+    const user = req.body;
+    console.log(user);
+    const newExample = await Service.signin(user);
     console.log(newExample);
     res.json(newExample);
   } catch (error) {

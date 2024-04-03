@@ -8,7 +8,7 @@
 }
 form {
   padding: 10px;
-  width: 1000px;
+  width: 800px;
   display: flex;
   flex-direction: column;
 }
@@ -34,17 +34,17 @@ h3 {
   margin-right: 10px;
   margin-top: 50px;
   margin-bottom: 30px;
-  color: #2f532b;
+  color: #3c3c3c;
 }
 .mbutton {
-  transform: translate(140%);
+  transform: translate(13%);
   margin-top: 20px;
-  width: 250px;
+  width: 175px;
   padding-top: 10px;
   padding-bottom: 10px;
   cursor: pointer;
   outline: none;
-  background-color: #2f532b;
+  background-color: rgb(214, 121, 34);
   border: none;
   color: #f5f5f5;
   font-family: "Poppins";
@@ -53,7 +53,17 @@ h3 {
   border-radius: 7px;
 }
 .app {
-  background-color: #faf4d9;
+  overflow: auto;
+  background: linear-gradient(
+    315deg,
+    rgb(255, 151, 54) 3%,
+    rgb(255, 168, 82) 38%,
+    rgb(255, 218, 155) 68%,
+    rgb(255, 247, 239) 98%
+  );
+  animation: gradient 20s ease infinite;
+  background-size: 400% 400%;
+  background-attachment: fixed;
   border-color: #5d3891;
   min-height: 100vh;
   display: flex;
@@ -66,11 +76,72 @@ h3 {
   margin-bottom: 30px;
 }
 
+@keyframes gradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.wave {
+  background: rgb(255 255 255 / 25%);
+  border-radius: 1000% 1000% 0 0;
+  position: fixed;
+  width: 200%;
+  height: 12em;
+  animation: wave 10s -3s linear infinite;
+  transform: translate3d(0, 0, 0);
+  opacity: 0.8;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.wave:nth-of-type(2) {
+  bottom: -1.25em;
+  animation: wave 18s linear reverse infinite;
+  opacity: 0.8;
+}
+
+.wave:nth-of-type(3) {
+  bottom: -2.5em;
+  animation: wave 20s -1s reverse infinite;
+  opacity: 0.9;
+}
+
+@keyframes wave {
+  2% {
+    transform: translateX(1);
+  }
+
+  25% {
+    transform: translateX(-25%);
+  }
+
+  50% {
+    transform: translateX(-50%);
+  }
+
+  75% {
+    transform: translateX(-25%);
+  }
+
+  100% {
+    transform: translateX(1);
+  }
+}
+
 .fields1 {
   width: 300px;
   margin-left: 29px;
   margin-top: 10px;
   border-radius: 8px;
+  border-color: rgb(255, 151, 54);
 }
 
 .detbox {
@@ -79,22 +150,41 @@ h3 {
   display: flex;
   justify-content: left;
   box-shadow: 0px 0px 100px 2px rgba(0, 0, 0, 0.172);
+  border-style: solid;
+  border-color: rgb(214, 121, 34);
+  border-width: 3px;
 }
 
 .boxdet {
-  background-color: #2f532b;
-  width: 30px;
+  background-image: url("./assets/IMG_7318.JPG");
+  background-position: center;
+  background-size: contain;
+  object-fit: cover;
+  width: 350px;
   height: 100vh;
   border-radius: 25px 0px 0px 25px;
 }
 
-.Mtitle {
-  font-family: "Poppins";
-  font-weight: 500;
-  text-align: center;
-  margin-top: 20px;
+.titlebox {
+  width: fit-content;
+  margin-left: 30px;
+  margin-top: 60px;
+  margin-bottom: 40px;
+  border-bottom: rgb(214, 121, 34);
+  border-bottom-width: 3px;
+  border-bottom-style: solid;
 }
 
+.Mtitle {
+  font-family: "Poppins";
+  font-weight: 200px;
+  font-size: 50px;
+  color: rgb(214, 121, 34);
+}
+
+.desctext {
+  width: 800px;
+}
 .nestedContainer {
   display: flex;
   align-items: center;
