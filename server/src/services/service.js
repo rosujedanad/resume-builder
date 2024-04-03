@@ -8,9 +8,10 @@ exports.getExamples = async () => {
 
 };
 
-exports.createExample = async (name) => {
-    console.log("controllr",name);
-  const resp = await userData.create({Name:name});
+exports.signin = async (user) => {
+    console.log("controllr",user);
+  const resp = await userData.create({UserID:user.userid, Name:user.name,Email:user.email});
   console.log(resp);
   return resp;
 };
+
