@@ -1,5 +1,4 @@
 // Import any required services or models here
-const { param } = require('../routes/routes');
 const Service = require('../services/service');
 
 // Define your controller methods
@@ -24,3 +23,14 @@ exports.signIn = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+exports.createResume = async(req,res) => {
+  try {
+    console.log(req.body);
+    const resumedetails = req.body;
+    const newResume = await Service.CreateResume(resumedetails);
+    res.json(newResume);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
