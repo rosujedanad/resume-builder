@@ -47,3 +47,22 @@ exports.signin = async (token) => {
 };
 
 
+exports.CreateResume = async (details) => {
+  try{
+    console.log('details',details)
+
+    return {
+      statusCode: 200,
+      body: { message: 'Resume created successfully' },
+    };
+  }
+  catch(error){
+    console.error('There was a problem with your fetch operation:', error);
+
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: error.message }),
+    };
+  }
+}
+
