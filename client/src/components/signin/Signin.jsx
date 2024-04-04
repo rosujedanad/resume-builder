@@ -47,7 +47,7 @@ function Signin() {
     <div className={styles.container}>
       <div className={styles.form_container}>
         <div className={styles.left}>
-          <img className={styles.img} src="../../src/assets/green_illustration.jpeg" alt="login"/>
+          <img className={styles.img} src="../../src/assets/loginil.jpeg" alt="login"/>
         </div>
         <div className={styles.right}>
           <h2 className={styles.from_heading}>ResuMate</h2>
