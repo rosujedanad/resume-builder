@@ -5,13 +5,19 @@ const projectDataSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    "Projects": {
+    resumeID :{
+        type : String,
+        required : true
+    },
+    "projects": {
         type : Array,
         items : {
             type : "object",
             properties : {
                 "title":{type:String, required:true},
-                "description":{type:String, required:true}
+                "description":{type:String, required:true},
+                "techStack":{type:String, required:true},
+                "link":{type:String}
             }
         }
     }
