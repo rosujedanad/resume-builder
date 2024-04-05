@@ -5,6 +5,7 @@ import Resume from "./components/Resume";
 import Signin from "./components/signin/Signin";
 import { Navigate } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import Loading from "./components/loading/Loading";
 
 const App = () => {
     // Retrieve authentication status from localStorage on component mount
@@ -27,6 +28,10 @@ const App = () => {
           <Route
             path="/"
             element={<Signin/>}
+          />
+          <Route
+            path="/loading"
+            element={<Loading/>}
           />
           <Route
             path="/home"
