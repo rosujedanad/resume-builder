@@ -14,9 +14,13 @@ const userDataSchema = new mongoose.Schema({
         required : true
     },
 
-    // Picture : {
-    //     type : String,
-    // },
+    Picture : {
+        type : String,
+    },
+    ResumeCount : {
+        type : Number,
+        default : 0
+    },
 });
 
 userDataSchema.plugin(mongooseDelete, { overrideMethods: 'all' });
