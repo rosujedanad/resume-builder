@@ -4,7 +4,7 @@ const { OAuth2Client } = require('google-auth-library');
 // const jwt = require('jsonwebtoken');
 
 const userData = require('../models/userModel');
-const { response } = require('express');
+const { v4: uuidv4 } = require('uuid');
 
 // Define your service methods
 exports.getExamples = async () => {
@@ -30,11 +30,30 @@ exports.signin = async (token) => {
     }
 
     const data = await response.json();
-    console.log('User Profile:', data);
+    const {name, email, picture} = data;
 
+    console.log('name', name, 'email', email);
+    const user = await userData.findOne({Email:email});
+    let userid = user ? user.UserID : '';
+    let resumeCount = user ? user.ResumeCount : 0;
+    if(user){
+      console.log('User already exists');
+    }
+    else{
+
+      userid =  uuidv4();
+      const newUser = new userData({
+        UserID : userid,
+        Name: name,
+        Email: email,
+        Picture: picture,
+        ResumeCount: 0
+      });
+      await newUser.save();
+    }
     return {
       statusCode: 200,
-      body: data,
+      body: { message: 'User signed in successfully',"userid":userid,"name":name,"email":email,"picture":picture,"resumecount":resumeCount },
     };
   } catch (error) {
     console.error('There was a problem with your fetch operation:', error);

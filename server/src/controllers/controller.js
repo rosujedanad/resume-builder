@@ -17,20 +17,24 @@ exports.signIn = async (req, res) => {
     const key = req.body;
     console.log("token",key.token);
     const newExample = await Service.signin(key.token);
-    console.log(newExample);
     res.json(newExample);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-exports.createResume = async(req,res) => {
+exports.createResume = async (req, res) => {
   try {
     console.log(req.body);
     const resumedetails = req.body;
+    console.log("resumedetails", typeof (resumedetails));
+    if (Object.keys(resumedetails).length === 0) {
+      return res.status(400).json({ error: 'No Details' }); // Return early if there are no details
+    }
     const newResume = await Service.CreateResume(resumedetails);
-    res.json(newResume);
+    return res.json(newResume); // Return the response and exit the function
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' }); // Return the error response and exit the function
   }
 }
