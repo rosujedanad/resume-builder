@@ -25,9 +25,9 @@ const Home = () => {
   }
   return (
     <div className="app">
-      <div class="wave"></div>
-      <div class="wave"></div>
-      <div class="wave"></div>
+      <div className="wave"></div>
+      <div className="wave"></div>
+      <div className="wave"></div>
       <div className="detbox">
         <div className="boxdet"></div>
         <div className="boxmain">
