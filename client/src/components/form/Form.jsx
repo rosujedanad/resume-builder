@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Loading from "./Loading";
+import Loading from "../loading/Loading";
 
 const Home = () => {
   const [fullName, setFullName] = useState("");
