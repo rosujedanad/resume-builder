@@ -1,22 +1,30 @@
 const mongoose = require('mongoose');
 const mongooseDelete = require('mongoose-delete');
 const userDataSchema = new mongoose.Schema({
-    UserID :{
+    userID :{
         type : String,
         required : true
     },
-    Name : {
+    resumeID :{
         type : String,
         required : true
     },
-    Email : {
+    resumeCount : {
+        type : Number,
+        default : 0
+    },
+    name : {
         type : String,
         required : true
     },
-
-    // Picture : {
-    //     type : String,
-    // },
+    email : {
+        type : String,
+        required : true
+    },
+    picture :{
+        type: String,
+        required:true
+    }
 });
 
 userDataSchema.plugin(mongooseDelete, { overrideMethods: 'all' });

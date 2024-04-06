@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Loading from "./Loading";
+import Loading from "./loading/Loading";
 
 const Home = () => {
   const [fullName, setFullName] = useState("");
@@ -25,9 +25,9 @@ const Home = () => {
   }
   return (
     <div className="app">
-      <div class="wave"></div>
-      <div class="wave"></div>
-      <div class="wave"></div>
+      <div className="wave"></div>
+      <div className="wave"></div>
+      <div className="wave"></div>
       <div className="detbox">
         <div className="boxdet"></div>
         <div className="boxmain">

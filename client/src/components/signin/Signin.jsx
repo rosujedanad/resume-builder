@@ -1,5 +1,5 @@
 import styles from "./styles.module.css";
-import { GoogleLogin, GoogleOAuthProvider, googleLogout, useGoogleLogin } from '@react-oauth/google';
+import { GoogleLogin, GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -8,22 +8,23 @@ function Signin() {
   const [user, setUser] = useState([]);
   const [profile, setProfile] = useState([]);
   const navigate = useNavigate();
+  const[token, setToken] = useState('');
 
   const login = useGoogleLogin({
     onSuccess: async (codeResponse) => {
       try {
         setUser(codeResponse);
+        setToken(codeResponse.access_token);
+        console.log('token', codeResponse.access_token);
 
-        const response = await axios.get(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${codeResponse.access_token}`,
-          {
-            headers: {
-              Authorization: `Bearer ${codeResponse.access_token}`,
-              Accept: 'application/json'
-            }
-          }
+        const response = await axios.post(
+          'http://localhost:3000/signin',
+          { "token": codeResponse.access_token }, // This should be the data object
+          { headers: { 'Content-Type': 'application/json' } } // This should be the headers object
         );
+        
         setProfile(response.data);
+        console.log('User Profile:', response);
 
         // Navigate after successful login and profile retrieval
         navigate('/home'); // Replace with your desired route after login
@@ -34,20 +35,17 @@ function Signin() {
     onError: (error) => console.log('Login Failed:', error)
   });
 
+  console.log('token:', token);
+
   useEffect(() => {
     // ... (your existing logic from the previous responses remains here)
   }, [user]);
-
-  const logOut = () => {
-    googleLogout();
-    setProfile(null);
-  };
 
   return (
     <div className={styles.container}>
       <div className={styles.form_container}>
         <div className={styles.left}>
-          <img className={styles.img} src="../../src/assets/green_illustration.jpeg" alt="login"/>
+          <img className={styles.img} src="../../src/assets/loginil.jpeg" alt="login"/>
         </div>
         <div className={styles.right}>
           <h2 className={styles.from_heading}>ResuMate</h2>
