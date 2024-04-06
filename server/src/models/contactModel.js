@@ -1,27 +1,34 @@
 const mongoose = require('mongoose');
 const mongooseDelete = require('mongoose-delete');
 const contactDataSchema = new mongoose.Schema({
-    UserID :{
+    userID :{
         type : String,
         required : true
     },
-    Place :{
-        type : String,
-        required :true
-    },
-    State :{
-        type : String,
-        required :true
-    },
-    Mobile :{
-        type : String,
-        required :true
-    },
-    Email : {
+    resumeID :{
         type : String,
         required : true
     },
-    LinkedIn : {
+    place :{
+        type : String,
+        required :true
+    },
+    state :{
+        type : String,
+        required :true
+    },
+    mobile :{
+        type : String,
+        required :true
+    },
+    email : {
+        type : String,
+        required : true
+    },
+    linkedin : {
+        type : String,
+    },
+    github : {
         type : String,
     }
 });

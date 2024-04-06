@@ -1,17 +1,21 @@
 const mongoose = require('mongoose');
 const mongooseDelete = require('mongoose-delete');
 const skillDataSchema = new mongoose.Schema({
-    UserID :{
+    userID :{
         type : String,
         required : true
     },
-    "Technical" : {
+    resumeID :{
+        type : String,
+        required : true
+    },
+    "technical" : {
         type : array,
         items: {
             type: String
         }
     },
-    "Non Technical" : {
+    "soft" : {
         type : array,
         items: {
             type: String

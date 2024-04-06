@@ -1,18 +1,21 @@
 const mongoose = require('mongoose');
 const mongooseDelete = require('mongoose-delete');
 const activityDataSchema = new mongoose.Schema({
-    UserID :{
+    userID :{
         type : String,
         required : true
     },
-    "Extra Curricular Activities": {
+    resumeID :{
+        type : String,
+        required : true
+    },
+    "extraCurricular": {
         type : Array,
         items : {
             type : "object",
             properties : {
-                "title":{type:String, required:true},
-                "organisation":{type:String},
-                "year":{type:String},
+                "name":{type:String, required:true},
+                "description":{type:String, required:true},
             }
         }
     }
