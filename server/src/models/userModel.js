@@ -5,6 +5,10 @@ const userDataSchema = new mongoose.Schema({
         type : String,
         required : true
     },
+    ResumeCount : {
+        type : Number,
+        default : 0
+    },
     Name : {
         type : String,
         required : true
@@ -13,10 +17,10 @@ const userDataSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-
-    // Picture : {
-    //     type : String,
-    // },
+    Picture :{
+        type: String,
+        required:true
+    }
 });
 
 userDataSchema.plugin(mongooseDelete, { overrideMethods: 'all' });
