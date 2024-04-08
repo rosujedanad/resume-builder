@@ -1,0 +1,10 @@
+.apps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.texts3{
+    color:black;
+}
