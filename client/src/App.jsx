@@ -28,6 +28,8 @@ const App = () => {
             <Route path="/" element={<Signin />} />
             <Route path="/loading" element={<Loading />} />
             <Route path="/form" element={<Home />} />
+            <Route path="/error" element={<ErrorPage />} />
+
           </Routes>
         </BrowserRouter>
       </GoogleOAuthProvider>
