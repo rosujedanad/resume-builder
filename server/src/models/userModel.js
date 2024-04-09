@@ -1,27 +1,23 @@
 const mongoose = require('mongoose');
 const mongooseDelete = require('mongoose-delete');
 const userDataSchema = new mongoose.Schema({
-    userID :{
+    UserID :{
         type : String,
         required : true
     },
-    resumeID :{
-        type : String,
-        required : true
-    },
-    resumeCount : {
+    ResumeCount : {
         type : Number,
         default : 0
     },
-    name : {
+    Name : {
         type : String,
         required : true
     },
-    email : {
+    Email : {
         type : String,
         required : true
     },
-    picture :{
+    Picture :{
         type: String,
         required:true
     }

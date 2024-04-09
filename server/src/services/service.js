@@ -32,7 +32,7 @@ exports.signin = async (token) => {
     const data = await response.json();
     const {name, email, picture} = data;
 
-    console.log('name', name, 'email', email);
+    console.log('name', name, 'email', email,'picture', picture);
     const user = await userData.findOne({Email:email});
     let userid = user ? user.UserID : '';
     let resumeCount = user ? user.ResumeCount : 0;
