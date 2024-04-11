@@ -1,5 +1,4 @@
-
-.application {
+.apps {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,23 +7,13 @@
     height:100vh;
 }
 
-.centering {
-    text-align: center;
-}
-
-.restext{
-    color: black; 
-    font-size:20px;
-    margin-bottom: -20px;
-}
-.loadtext {
+.texts3{
     color: black; 
     font-size:18px;
     margin-top:20px;
 }
 
 .imagefile{
-    padding-top: 35px;
-    width: 50%;
-
+    padding-top: 70px;
+    width: 22%;
 }

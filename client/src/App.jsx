@@ -6,6 +6,7 @@ import Signin from "./components/signin/Signin";
 import { Navigate } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Loading from "./components/loading/Loading";
+import ErrorPage from "./components/error/ErrorPage";
 
 const App = () => {
   // Retrieve authentication status from localStorage on component mount
@@ -27,6 +28,8 @@ const App = () => {
             <Route path="/" element={<Signin />} />
             <Route path="/loading" element={<Loading />} />
             <Route path="/form" element={<Home />} />
+            <Route path="/error" element={<ErrorPage />} />
+
           </Routes>
         </BrowserRouter>
       </GoogleOAuthProvider>
