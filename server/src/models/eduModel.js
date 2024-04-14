@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const mongooseDelete = require('mongoose-delete');
 const eduDataSchema = new mongoose.Schema({
-    userID :{
+    UserID :{
         type : String,
         required : true
     },
