@@ -221,3 +221,48 @@ form {
   font-weight: 300px;
   border-radius: 7px;
 }
+
+.projCont {
+  display: flex;
+  flex-direction: column;
+}
+
+.projDesc {
+  display: flex;
+  flex-direction: column;
+}
+
+.addBtn {
+  width: 50px;
+  height: 30px;
+  margin-left: 29px;
+  font-family: "Poppins";
+  margin-top: 10px;
+  background-color: rgb(4, 64, 90);
+  color: white;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(4, 64, 90);
+  border-radius: 10px;
+  font-size: 20px;
+}
+
+.deleteBtn {
+  width: 50px;
+  height: 30px;
+  margin-left: 29px;
+  font-family: "Poppins";
+  margin-top: 10px;
+  background-color: rgb(4, 64, 90);
+  color: white;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(4, 64, 90);
+  border-radius: 10px;
+  font-size: 20px;
+}
+
+.alter {
+  display: flex;
+  flex-direction: column;
+}
