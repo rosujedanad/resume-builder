@@ -9,17 +9,13 @@ const skillDataSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    "technical" : {
-        type : array,
-        items: {
-            type: String
-        }
+    technical: {
+        type : [String],
+        required : true
     },
-    "soft" : {
-        type : array,
-        items: {
-            type: String
-        }
+    soft : {
+        type : [String],
+        required : true
     },
    
 });

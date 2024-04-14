@@ -9,23 +9,19 @@ const eduDataSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    "ug" : {
-        type : "object",
-        properties : {
+    ug: {
             "college" : {type: String, required: true},
             "department" : {type: String, required: true},
-            "cgpa" : {type: Number, required: true},
-        }
+            "cgpa" : {type: String, required: true},
     },
 
-    "hss" : {
-        type : "object",
-        properties : {
+    hss : {
+    
             "school": {type: String, required: true},
             "stream": {type: String, required: true},
             "percentage": {type: Number, required: true}
         }
-    },
+
     
 });
 

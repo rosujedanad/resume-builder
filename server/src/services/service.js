@@ -4,6 +4,13 @@ const { OAuth2Client } = require('google-auth-library');
 // const jwt = require('jsonwebtoken');
 
 const userData = require('../models/userModel');
+const contactData = require('../models/contactModel');
+const eduData = require('../models/eduModel');
+const skillData = require('../models/skillModel');
+const projectData = require('../models/projectModel');
+const internData = require('../models/internModel');
+const activityData = require('../models/activityModel');
+
 const { v4: uuidv4 } = require('uuid');
 
 // Define your service methods
@@ -68,7 +75,71 @@ exports.signin = async (token) => {
 
 exports.CreateResume = async (details) => {
   try{
-    console.log('details',details)
+    console.log('details',details.userID);
+
+      const newContact = new contactData({
+        UserID : details.userID,
+        resumeID : details.resumeID,
+        place: details.contact.place,
+        state : details.contact.state,
+        mobile : details.contact.mobile,
+        email : details.contact.email,
+        linkedin : details.contact.linkedin,
+        github : details.contact.github
+      });
+      await newContact.save();
+
+      const newEdu = new eduData({
+        UserID : details.userID,
+        resumeID : details.resumeID,
+        ug : {
+          college : details.education.ug.college,
+          department : details.education.ug.department,
+          cgpa : details.education.ug.cgpa
+        },
+        hss :{
+          school : details.education.hss.school,
+          stream : details.education.hss.stream,
+          percentage :details.education.hss.percentage
+        }
+      }); 
+      await newEdu.save();
+
+      const newSkill = new skillData({
+        UserID : details.userID,
+        resumeID : details.resumeID,
+        technical :details.skills.technical,
+        soft :details.skills.soft,
+      });
+      await newSkill.save();  
+
+      const newProject = new projectData({
+        UserID : details.userID,
+        resumeID : details.resumeID,
+        title: details.projects.title,
+        description: details.projects.description,
+        techStack: details.projects.techStack,
+        link: details.projects.link
+      });
+      await newProject.save();  
+
+      const newIntern = new internData({
+        UserID : details.userID,
+        resumeID : details.resumeID,
+        company: details.internships.company,
+        role: details.internships.role,
+        duration: details.internships.duration,
+        description: details.internships.description
+      });
+      await newIntern.save();  
+
+      const newActivity = new activityData({
+        UserID : details.userID,
+        resumeID : details.resumeID,
+        name: details.extraCurriculur.name,
+        description: details.extraCurriculur.description
+      });
+      await newActivity .save();  
 
     return {
       statusCode: 200,
