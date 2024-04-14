@@ -113,33 +113,49 @@ exports.CreateResume = async (details) => {
       });
       await newSkill.save();  
 
-      const newProject = new projectData({
-        UserID : details.userID,
-        resumeID : details.resumeID,
-        title: details.projects.title,
-        description: details.projects.description,
-        techStack: details.projects.techStack,
-        link: details.projects.link
-      });
-      await newProject.save();  
+      const newProjects = Object.values(details.projects).map((project) => ({
+        title: project.title,
+        description: project.description,
+        techStack: project.techStack,
+        link: project.link
+    }));
+    
+    const newProjectData = new projectData({
+        UserID: details.userID,
+        resumeID: details.resumeID,
+        projects: newProjects
+    });
+    
+    await newProjectData.save();
+     
 
-      const newIntern = new internData({
-        UserID : details.userID,
-        resumeID : details.resumeID,
-        company: details.internships.company,
-        role: details.internships.role,
-        duration: details.internships.duration,
-        description: details.internships.description
-      });
-      await newIntern.save();  
+    const newInternships = Object.values(details.internships).map((internship) => ({
+      company: internship.company,
+      role: internship.role,
+      duration: internship.duration,
+      description: internship.description
+  }));
+  
+  const newInternData = new internData({
+      UserID: details.userID,
+      resumeID: details.resumeID,
+      internships: newInternships
+  });
+  
+  await newInternData.save();
 
-      const newActivity = new activityData({
-        UserID : details.userID,
-        resumeID : details.resumeID,
-        name: details.extraCurriculur.name,
-        description: details.extraCurriculur.description
-      });
-      await newActivity .save();  
+  const newActivities = Object.values(details.extraCurricular).map((activity) => ({
+    name: activity.name,
+    description: activity.description
+}));
+
+const newActivityData = new activityData({
+    UserID: details.userID,
+    resumeID: details.resumeID,
+    extraCurricular: newActivities
+});
+
+await newActivityData.save();
 
     return {
       statusCode: 200,
