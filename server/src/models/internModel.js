@@ -9,17 +9,11 @@ const internDataSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    "internships": {
-        type : Array,
-        items : {
-            type : "object",
-            properties : {
-                "company":{type:String, required:true},
-                "role":{type:String, required:true},
-                "duration":{type:String,required:true},
-                "description":{type:String, required:true}
-            }
-        }
+    internships: {
+        company:{type:String, required:true},
+        role:{type:String, required:true},
+        duration:{type:String,required:true},
+        description:{type:String, required:true}           
     }
 });
 

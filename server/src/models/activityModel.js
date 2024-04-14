@@ -9,15 +9,9 @@ const activityDataSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    "extraCurricular": {
-        type : Array,
-        items : {
-            type : "object",
-            properties : {
-                "name":{type:String, required:true},
-                "description":{type:String, required:true},
-            }
-        }
+    extraCurricular: {
+            "name":{type:String, required:true},
+            "description":{type:String, required:true},
     }
 });
 
