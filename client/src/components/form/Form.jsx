@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Loading from "../loading/Loading";
 import styles from "./styles.module.css";
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const Home = () => {
   const [fullName, setFullName] = useState("");
@@ -63,6 +64,29 @@ const Home = () => {
   if (loading) {
     return <Loading />;
   }
+
+
+
+// Access your API key as an environment variable (see "Set up your API key" above)
+const genAI = new GoogleGenerativeAI('AIzaSyCW-anwcxQinuBvRZZOQiUTNHRRgHxSx-g');
+
+// For text-only input, use the gemini-pro model
+const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+
+async function run() {
+  const prompt = "Hi"
+
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  const text = response.text();
+  console.log(text);
+}
+
+run();
+
+
+
+
   return (
     <div className={styles.app}>
       <div className="wave"></div>
