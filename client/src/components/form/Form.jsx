@@ -20,6 +20,45 @@ const Home = () => {
     });
     setLoading(true);
   };
+
+  //Adding Project
+
+  const [ProjInfo1, setProjInfo1] = useState([{ ProName: "", ProDesc: "" }]);
+  const handleAddProj = () =>
+    setProjInfo1([...ProjInfo1, { ProName: "", ProDesc: "" }]);
+
+  //Handling Project
+  const handleRemoveProj = (index) => {
+    const ProjList = [...ProjInfo1];
+    ProjList.splice(index, 1);
+    setProjInfo1(ProjList);
+  };
+  const handleUpdateProj = (e, index) => {
+    const { name, value } = e.target;
+    const ProjList = [...ProjInfo1];
+    ProjList[index][name] = value;
+    setProjInfo1(ProjList);
+  };
+
+  //Adding Internship
+
+  const [InternInfo, setInternInfo] = useState([{ IntName: "", IntDesc: "" }]);
+  const handleAddInt = () =>
+    setInternInfo([...InternInfo, { IntName: "", IntDesc: "" }]);
+
+  //Handling Internship
+  const handleRemoveInt = (index) => {
+    const IntList = [...InternInfo];
+    IntList.splice(index, 1);
+    setInternInfo(IntList);
+  };
+  const handleUpdateInt = (e, index) => {
+    const { name, value } = e.target;
+    const IntList = [...InternInfo];
+    IntList[index][name] = value;
+    setInternInfo(IntList);
+  };
+
   //👇🏻 Renders the Loading component you submit the form
   if (loading) {
     return <Loading />;
@@ -291,6 +330,125 @@ const Home = () => {
               accept="image/x-png,image/jpeg"
               onChange={(e) => setHeadshot(e.target.files[0])}
             />
+            <label className={styles.mhead}>Projects you've worked on:</label>
+            <form>
+              {ProjInfo1.map((project, index) => (
+                <div className={styles.projCont} key={index}>
+                  <div className="projectName">
+                    <label htmlFor="name" className={styles.heading}>
+                      Project Name:
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      className={styles.fields1}
+                      required
+                      onChange={(e) => handleUpdateProj(e, index)}
+                    />
+                  </div>
+                  <div className={styles.projDesc}>
+                    <label htmlFor="position" className={styles.heading}>
+                      Description:
+                    </label>
+                    <textarea
+                      className={styles.parabox}
+                      placeholder="Python, JavaScript etc."
+                      required
+                      onChange={(e) => handleUpdateProj(e, index)}
+                    ></textarea>
+                  </div>
+
+                  <div className="btn__group">
+                    {ProjInfo1.length - 1 === index && ProjInfo1.length < 4 && (
+                      <button className={styles.addBtn} onClick={handleAddProj}>
+                        +
+                      </button>
+                    )}
+                    {ProjInfo1.length > 1 && (
+                      <button
+                        className={styles.deleteBtn}
+                        onClick={() => handleRemoveProj(index)}
+                      >
+                        -
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </form>
+
+            <label className={styles.mhead}>Internships:</label>
+            <form>
+              {InternInfo.map((intern, index) => (
+                <div className={styles.projCont} key={index}>
+                  <div className="intComp">
+                    <label htmlFor="name" className={styles.heading}>
+                      Company Name:
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      className={styles.fields1}
+                      required
+                      onChange={(e) => handleUpdateInt(e, index)}
+                    />
+                  </div>
+                  <div className={styles.projDesc}>
+                    <label htmlFor="position" className={styles.heading}>
+                      Description:
+                    </label>
+                    <textarea
+                      className={styles.parabox}
+                      placeholder="Python, JavaScript etc."
+                      required
+                      onChange={(e) => handleUpdateProj(e, index)}
+                    ></textarea>
+                  </div>
+
+                  <div className="btn__group">
+                    {InternInfo.length - 1 === index &&
+                      InternInfo.length < 4 && (
+                        <button
+                          className={styles.addBtn}
+                          onClick={handleAddInt}
+                        >
+                          +
+                        </button>
+                      )}
+                    {InternInfo.length > 1 && (
+                      <button
+                        className={styles.deleteBtn}
+                        onClick={() => handleRemoveInt(index)}
+                      >
+                        -
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </form>
+            <div>
+              <div className={styles.alter}></div>
+              <label className={styles.mhead}>
+                Alternate Links (optional):
+              </label>
+              <div className="linked">
+                <label className={styles.heading}>LinkedIn:</label>
+                <input
+                  type="url"
+                  className={styles.fields2}
+                  placeholder="https://www.linkedin.com/johndoe"
+                ></input>
+                <div className="github">
+                  <label className={styles.heading}>Github:</label>
+                  <input
+                    type="url"
+                    className={styles.fields2}
+                    placeholder="https://github.com/johndoe"
+                  ></input>
+                </div>
+              </div>
+            </div>
             <button className={styles.mbutton}>Create Resume</button>
           </form>
         </div>
@@ -298,4 +456,5 @@ const Home = () => {
     </div>
   );
 };
+
 export default Home;
