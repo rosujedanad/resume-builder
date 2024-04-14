@@ -39,13 +39,7 @@ h3 {
 #photo {
   width: 50%;
 }
-#addBtn {
-  background-color: green;
-  margin-right: 5px;
-}
-#deleteBtn {
-  background-color: red;
-}
+
 .container {
   min-height: 100vh;
   padding: 30px;
