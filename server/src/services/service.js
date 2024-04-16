@@ -172,3 +172,69 @@ await newActivityData.save();
   }
 }
 
+exports.viewResume = async (userid) => {
+  try {
+    let contact = await contactData.findOne({ UserID:userid});
+    contact = {"UserID": contact.UserID,
+                "resumeID": contact.resumeID,
+                "contact":{
+                "place": contact.place,
+                "state": contact.state,
+                "mobile": contact.mobile,
+                "email": contact.email,
+                "linkedin": contact.linkedin,
+                "github": contact.github}}
+
+    let education = await eduData.findOne({ UserID:userid});
+    education = {"ug":{"college": education.ug.college,
+                  "department": education.ug.department,  
+                  "cgpa": education.ug.cgpa},
+                  "hss":{
+                  "school": education.hss.school, 
+                  "stream": education.hss.stream,
+                  "percentage": education.hss.percentage}}
+
+    let skills = await skillData.findOne({ UserID:userid});
+    skills = {"skills": {"technical": skills.technical,
+                        "soft": skills.soft}}
+
+    let projects = await projectData.findOne({ UserID:userid});
+    const modprojects = projects.projects.map((project) =>
+                    (
+                    {"title":project.title,
+                     "description":project.description,
+                     "techStack":project.techStack,
+                     "link":project.link }))
+    const newProjectData = {
+      projects: modprojects
+    };
+
+    let internships = await internData.findOne({ UserID:userid});
+    const modinternships = internships.internships.map((internship) =>
+                  ({
+                    "company": internship.company,
+                    "role": internship.role,
+                    "duration": internship.duration,
+                    "description": internship.description}
+    ))
+    const newInternData = {
+      projects: modinternships
+    };
+
+    let extraCurricular = await activityData.findOne({ UserID:userid});
+    const modact =extraCurricular.extraCurricular.map((activity) =>
+      ({ "name":activity.name,
+        "description": activity.description
+      }))
+    const newAct ={
+      extraCurricular:modact
+    }
+
+    const resumeDetails = { contact, education, skills, modprojects, modinternships, modact};
+    return resumeDetails;
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
