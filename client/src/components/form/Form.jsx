@@ -74,11 +74,12 @@ const Home = () => {
         return acc;
       }, {}),
     };
+
     const resumedetails = { formData };
     console.log(resumedetails);
     resumeData && <Resume formData={resumeData} />;
     // setLoading(true);
-    navigate("/resume");
+    navigate("/resume", { state: { formData } });
   };
 
   //Adding Project
