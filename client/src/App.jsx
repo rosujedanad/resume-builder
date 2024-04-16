@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/form/Form";
-import Resume from "./components/Resume";
+import Resume from "./components/resume/Resume";
 import Signin from "./components/signin/Signin";
 import { Navigate } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -10,6 +10,7 @@ import ErrorPage from "./components/error/ErrorPage";
 
 const App = () => {
   // Retrieve authentication status from localStorage on component mount
+
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     const storedAuthStatus = localStorage.getItem("isAuthenticated");
     return storedAuthStatus ? JSON.parse(storedAuthStatus) : false;
@@ -29,7 +30,7 @@ const App = () => {
             <Route path="/loading" element={<Loading />} />
             <Route path="/form" element={<Home />} />
             <Route path="/error" element={<ErrorPage />} />
-
+            <Route path="/resume" element={<Resume />} />
           </Routes>
         </BrowserRouter>
       </GoogleOAuthProvider>
