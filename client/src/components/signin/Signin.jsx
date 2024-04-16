@@ -6,7 +6,7 @@ import {
 } from "@react-oauth/google";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 
 function Signin() {
   const [user, setUser] = useState([]);
@@ -26,12 +26,17 @@ function Signin() {
           { token: codeResponse.access_token }, // This should be the data object
           { headers: { "Content-Type": "application/json" } } // This should be the headers object
         );
-
+        localStorage.setItem("token", codeResponse.access_token);
         setProfile(response.data);
         console.log("User Profile:", response);
+        const userid = response.data.body.userid;
+        localStorage.setItem("userid", userid);
+        console.log("userid", userid);
+        console.log('codetoken', codeResponse.access_token);
+        codeResponse.access_token && <Form token={codeResponse.access_token}/>;
 
         // Navigate after successful login and profile retrieval
-        navigate("/form"); // Replace with your desired route after login
+        navigate("/form",{ state: { token } }); // Replace with your desired route after login
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }

@@ -3,9 +3,12 @@ import Loading from "../loading/Loading";
 import styles from "./styles.module.css";
 import { useNavigate } from "react-router-dom";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [fullName, setFullName] = useState("");
   const [address, setCurrentAddress] = useState("");
   const [state, setCurrentState] = useState("def");
@@ -26,6 +29,10 @@ const Home = () => {
   const [github, setCurrentGithub] = useState();
   const [loading, setLoading] = useState(false);
   const [resumeData, setResumeData] = useState(null);
+
+  const token = localStorage.getItem("token");
+  const userid = localStorage.getItem("userid");
+
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -60,7 +67,7 @@ const Home = () => {
       internships: InternInfo.reduce((acc, internship, index) => {
         acc[`internship${index + 1}`] = {
           company: internship.intCompName,
-          rduration: internship.intDur,
+          duration: internship.intDur,
           description: internship.intDesc,
         };
         return acc;
@@ -74,9 +81,33 @@ const Home = () => {
         return acc;
       }, {}),
     };
+    
+    let resumedetails =  formData ;
+    resumedetails = {"userID":userid,"resumeID":"1",...resumedetails}
+    resumedetails = JSON.stringify(resumedetails);
+    console.log("resumedetailsfinal",resumedetails);
 
-    const resumedetails = { formData };
-    console.log(resumedetails);
+    const submitResumeData = async (res) => {
+      try {
+        console.log("dsffdfe",{res})
+        const response = await axios.post(
+          "http://localhost:3000/createResume",
+          res,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+  
+        console.log("Response:", response.data);
+      } catch (error) {
+        console.error("Error:", error.message);
+      }
+    };
+    submitResumeData(resumedetails);
+
+    console.log('this',resumedetails);
     resumeData && <Resume formData={resumeData} />;
     // setLoading(true);
     navigate("/resume", { state: { formData } });
