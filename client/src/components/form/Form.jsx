@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Loading from "../loading/Loading";
 import styles from "./styles.module.css";
+import { useNavigate } from "react-router-dom";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const Home = () => {
+  const navigate = useNavigate();
   const [fullName, setFullName] = useState("");
   const [address, setCurrentAddress] = useState("");
   const [state, setCurrentState] = useState("def");
@@ -74,8 +76,9 @@ const Home = () => {
     };
     const resumedetails = { formData };
     console.log(resumedetails);
-    setResumeData(formData);
-    setLoading(true);
+    resumeData && <Resume formData={resumeData} />;
+    // setLoading(true);
+    navigate("/resume");
   };
 
   //Adding Project
