@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Loading from "../loading/Loading";
 import styles from "./styles.module.css";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import axios from "axios";
 
 const Home = () => {
   const [fullName, setFullName] = useState("");
@@ -19,11 +19,16 @@ const Home = () => {
   const [qualif2mk, setCurrentQualif2Mark] = useState("");
   const [tecskill, setCurrentTecskill] = useState();
   const [splitTecSkill, setCurrentSplitTec] = useState([]);
-  const [sofskill, setCurrentSofskill] = useState();
-  const [linkedin, setCurrentLinkedin] = useState();
-  const [github, setCurrentGithub] = useState();
+  const [sofskill, setCurrentSofskill] = useState("");
+  const [linkedin, setCurrentLinkedin] = useState("");
+  const [github, setCurrentGithub] = useState("");
   const [loading, setLoading] = useState(false);
   const [resumeData, setResumeData] = useState(null);
+  const [resumedetails, setResumedetails] = useState(null);
+  const [ProjInfo1, setProjInfo1] = useState([{ prName: "", prDesc: "" }]);
+  const [InternInfo, setInternInfo] = useState([{ intCompName: "", intDur: "", intDesc: "" }]);
+  const [ActInfo, setActInfo] = useState([{ ActName: "", ActRole: "", ActDesc: "" }]);
+
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -72,24 +77,40 @@ const Home = () => {
         return acc;
       }, {}),
     };
-    const resumedetails = { formData };
-    console.log(resumedetails);
+    const Resumedetails = JSON.stringify(formData);
+    setResumedetails(Resumedetails);
+    
     setResumeData(formData);
     setLoading(true);
   };
+  console.log("res",resumedetails);
+  const submitResumeData = async (res) => {
+    try {
+      console.log("dsffdfe",{res})
+      const response = await axios.post(
+        "http://localhost:3000/createResume",
+        res,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-  //Adding Project
+      console.log("Response:", response.data);
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
+  };
 
-  const [ProjInfo1, setProjInfo1] = useState([{ prName: "", prDesc: "" }]);
-  const handleAddProj = () =>
-    setProjInfo1([...ProjInfo1, { prName: "", prDesc: "" }]);
+  const handleAddProj = () => setProjInfo1([...ProjInfo1, { prName: "", prDesc: "" }]);
 
-  //Handling Project
   const handleRemoveProj = (index) => {
     const ProjList = [...ProjInfo1];
     ProjList.splice(index, 1);
     setProjInfo1(ProjList);
   };
+
   const handleUpdateProj = (e, index) => {
     const { name, value } = e.target;
     const ProjList = [...ProjInfo1];
@@ -97,23 +118,14 @@ const Home = () => {
     setProjInfo1(ProjList);
   };
 
-  //Adding Internship
+  const handleAddInt = () => setInternInfo([...InternInfo, { intCompName: "", intDur: "", intDesc: "" }]);
 
-  const [InternInfo, setInternInfo] = useState([
-    { intCompName: "", intDur: "", intDesc: "" },
-  ]);
-  const handleAddInt = () =>
-    setInternInfo([
-      ...InternInfo,
-      { intCompName: "", intDur: "", intDesc: "" },
-    ]);
-
-  //Handling Internship
   const handleRemoveInt = (index) => {
     const IntList = [...InternInfo];
     IntList.splice(index, 1);
     setInternInfo(IntList);
   };
+
   const handleUpdateInt = (e, index) => {
     const { name, value } = e.target;
     const IntList = [...InternInfo];
@@ -121,26 +133,20 @@ const Home = () => {
     setInternInfo(IntList);
   };
 
-  //Adding Cocurricular Activities
-  const [ActInfo, setActInfo] = useState([
-    { ActName: "", ActRole: "", ActDesc: "" },
-  ]);
-  const handleAddAct = () =>
-    setActInfo([...ActInfo, { ActName: "", ActRole: "", ActDesc: "" }]);
+  const handleAddAct = () => setActInfo([...ActInfo, { ActName: "", ActRole: "", ActDesc: "" }]);
 
-  //Handling Cocurricular Activities
   const handleRemoveAct = (index) => {
     const ActList = [...ActInfo];
     ActList.splice(index, 1);
     setActInfo(ActList);
   };
+
   const handleUpdateAct = (e, index) => {
     const { name, value } = e.target;
     const ActList = [...ActInfo];
     ActList[index][name] = value;
     setActInfo(ActList);
   };
-
   //👇🏻 Renders the Loading component you submit the form
   if (loading) {
     return <Loading />;
@@ -651,7 +657,7 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <button className={styles.mbutton} onClick={handleFormSubmit}>
+            <button className={styles.mbutton} onClick={() => submitResumeData(resumedetails)}>
               Create Resume
             </button>
           </form>
