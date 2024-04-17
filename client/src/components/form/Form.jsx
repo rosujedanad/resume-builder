@@ -3,9 +3,13 @@ import Loading from "../loading/Loading";
 import styles from "./styles.module.css";
 import { useNavigate } from "react-router-dom";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
+import Resume from "../resume/Resume";
 
 const Home = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [fullName, setFullName] = useState("");
   const [address, setCurrentAddress] = useState("");
   const [state, setCurrentState] = useState("def");
@@ -27,9 +31,13 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [resumeData, setResumeData] = useState(null);
 
+  const token = localStorage.getItem("token");
+  const userid = localStorage.getItem("userid");
+
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const formData = {
+    let formData = {
       details: {
         name: fullName,
         email: mail,
@@ -60,7 +68,7 @@ const Home = () => {
       internships: InternInfo.reduce((acc, internship, index) => {
         acc[`internship${index + 1}`] = {
           company: internship.intCompName,
-          rduration: internship.intDur,
+          duration: internship.intDur,
           description: internship.intDesc,
         };
         return acc;
@@ -74,13 +82,56 @@ const Home = () => {
         return acc;
       }, {}),
     };
+    
+    let resumedetails =  formData ;
+    resumedetails = {"userID":userid,"resumeID":"1",...resumedetails}
 
-    const resumedetails = { formData };
-    console.log(resumedetails);
-    resumeData && <Resume formData={resumeData} />;
-    // setLoading(true);
-    navigate("/resume", { state: { formData } });
-  };
+    
+
+
+
+    const submitResumeData = async (resumedetails) => {
+      try {
+        console.log("Submitting resume data:", resumedetails);
+        
+    
+        
+    
+        // Once the response is received, continue with other actions
+        const about = await aboutapi(formData.skills);
+        if (!about) {
+          navigate('/loading');
+          return;
+        }
+    
+        const updatedResumeDetails = {...resumedetails, about: {about}};
+        setResumeData(updatedResumeDetails);
+        const response = await axios.post(
+          "http://localhost:3000/createResume",
+          updatedResumeDetails,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("Response:", response.data);
+        formData = updatedResumeDetails;
+        console.log("Updated resumedetails:", updatedResumeDetails);
+        const updatedResumeDetailsJSON = JSON.stringify(updatedResumeDetails);
+        console.log("Updated resumedetails:", updatedResumeDetailsJSON);
+    
+        // Assuming `resumeData` is defined elsewhere
+       // updatedResumeDetails && <Resume foormData={updatedResumeDetails} />;
+        //if(resumeData){navigate("/resume", { state: {resumeData }});}
+        navigate("/resume", { state: {formData}});
+      } catch (error) {
+        console.error("Error:", error.message);
+      }
+    };
+    
+    submitResumeData(resumedetails);
+  }    
 
   //Adding Project
 
@@ -168,6 +219,23 @@ const Home = () => {
   // }
 
   // run();
+  const aboutapi = async (skills) => {
+      const genAI = new GoogleGenerativeAI(
+    "AIzaSyDbvLnLCALnrt_X4Ydr-nY2zmg-M1JqyV8"
+  );
+   // For text-only input, use the gemini-pro model
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  skills = JSON.stringify(skills)
+  console.log("skills",skills.technical);
+    const prompt = `i am writing a resume. write an about section for a resume for a engineer with the following skills: ${skills} in about 100 words.`;
+    console.log(prompt)
+
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const text = response.text();
+    console.log(text);
+    return text;
+  }
 
   return (
     <div className={styles.app}>

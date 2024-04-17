@@ -75,7 +75,7 @@ exports.signin = async (token) => {
 
 exports.CreateResume = async (details) => {
   try{
-    console.log('details',details.userID);
+    console.log('details',details);
 
       const newContact = new contactData({
         UserID : details.userID,
@@ -131,7 +131,7 @@ exports.CreateResume = async (details) => {
 
     const newInternships = Object.values(details.internships).map((internship) => ({
       company: internship.company,
-      role: internship.role,
+      // role: internship.role,
       duration: internship.duration,
       description: internship.description
   }));
