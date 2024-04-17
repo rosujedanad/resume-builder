@@ -148,14 +148,63 @@
   font-size: 14px;
 }
 
+.detCol {
+  display: flex;
+  margin-top: 30px;
+}
+
 .colLeft {
-  background-color: #5d3891;
-  width: 350px;
-  height: 100px;
+  width: 215px;
+  height: 830px;
+  border-right-width: 2px;
+  border-right-style: solid;
+  border-right-color: rgb(148, 197, 204);
+}
+
+.edTitle {
+  font-family: "Poppins";
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  color: black;
+}
+
+.edBranch {
+  font-family: "Montserrat";
+  font-size: 14px;
+  margin-top: 0px;
+  margin-bottom: 7px;
+  font-weight: 400;
+  color: black;
+}
+
+.edMks {
+  font-family: "Montserrat";
+  font-size: 14px;
+  margin-top: 0px;
+  font-weight: 400;
+  color: black;
+}
+
+.marks {
+  font-family: "Poppins";
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 5px;
+  color: rgb(11, 66, 90);
+}
+
+.skTitle {
+  font-family: "Montserrat";
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  font-weight: 400;
+  color: black;
 }
 
 .colRight {
-  background-color: aqua;
   width: 350px;
-  height: 100px;
+  height: 830px;
 }
