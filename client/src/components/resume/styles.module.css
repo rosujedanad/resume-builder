@@ -114,17 +114,26 @@
 }
 
 .address {
-  margin-top: -8px;
+  margin-top: -2px;
   margin-bottom: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 700px;
 }
+
 .addText {
   text-align: center;
   font-family: "Montserrat";
   font-size: small;
+}
+
+.dot {
+  height: 4px;
+  width: 4px;
+  background-color: black;
+  border-radius: 50%;
+  display: inline-block;
 }
 
 .resBody {
@@ -161,6 +170,10 @@
   border-right-color: rgb(148, 197, 204);
 }
 
+.education {
+  width: 205px;
+}
+
 .edTitle {
   font-family: "Poppins";
   font-size: 14px;
@@ -195,6 +208,10 @@
   color: rgb(11, 66, 90);
 }
 
+.skills {
+  width: 205px;
+}
+
 .skTitle {
   font-family: "Montserrat";
   font-size: 14px;
@@ -204,7 +221,56 @@
   color: black;
 }
 
+.sk {
+  font-family: "Poppins";
+  color: rgb(11, 66, 90);
+  font-size: 16px;
+  font-weight: 500;
+}
+
 .colRight {
   width: 350px;
   height: 830px;
+}
+
+.rightColEle {
+  margin-left: 20px;
+}
+
+.rightFields {
+  width: 400px;
+  margin-bottom: 16px;
+}
+.rightTitle {
+  font-family: "Poppins";
+  font-size: 18px;
+  font-weight: 400;
+  margin-top: 5px;
+  color: rgb(11, 66, 90);
+}
+
+.projTitle {
+  font-family: "Poppins";
+  font-size: 16px;
+  font-weight: 550;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  color: black;
+}
+
+.projDesc {
+  margin-left: 12px;
+  font-family: "Montserrat";
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.intDur {
+  font-family: "Poppins";
+  font-weight: 400;
+  font-size: 15px;
+  color: rgb(11, 66, 90);
+  margin-top: 0px;
+  margin-bottom: -1px;
+  margin-left: 12px;
 }

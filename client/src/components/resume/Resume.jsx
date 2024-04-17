@@ -9,6 +9,7 @@ const Resume = () => {
   const location = useLocation();
   const { formData } = location.state;
   console.log(formData);
+
   return (
     <>
       <main className={styles.container}>
@@ -19,8 +20,8 @@ const Resume = () => {
             </div>
             <div className={styles.address}>
               <p className={styles.addText}>
-                {formData.contact.place} . {formData.contact.state} .{" "}
-                {formData.contact.mobile} . {formData.contact.email}
+                {formData.contact.place} - {formData.contact.state} -
+                {formData.contact.mobile} - {formData.contact.email}
                 {/* { . {formData.contact.linkedin} .{" "}
                 {formData.contact.github} */}
               </p>
@@ -34,7 +35,7 @@ const Resume = () => {
             <div className={styles.detCol}>
               <div className={styles.colLeft}>
                 <div className={styles.leftFields}>
-                  <div className="education">
+                  <div className={styles.education}>
                     <h2 className={styles.resTitle}>Education</h2>
                     <h3 className={styles.edTitle}>
                       {formData.education.hss.school}
@@ -64,11 +65,71 @@ const Resume = () => {
                   <div className={styles.skills}>
                     <h2 className={styles.resTitle}>Skills</h2>
                     <h3 className={styles.skTitle}>Technical Skills:</h3>
-                    <p>{formData.skills.technical[0]}</p>
+                    <div>
+                      <p className={styles.sk}>
+                        {formData.skills.technical.join(", ")}
+                      </p>
+                    </div>
+                    <h3 className={styles.skTitle}>Technical Skills:</h3>
+                    <div>
+                      <p className={styles.sk}>
+                        {formData.skills.soft.join(", ")}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className={styles.colRight}></div>
+              <div className={styles.colRight}>
+                <div className={styles.rightColEle}>
+                  <div className={styles.rightFields}>
+                    <h2 className={styles.rightTitle}>Projects</h2>
+                    {Object.keys(formData.projects).map((projectKey) => (
+                      <div key={projectKey}>
+                        <h3 className={styles.projTitle}>
+                          - {formData.projects[projectKey].title}
+                        </h3>
+                        <p className={styles.projDesc}>
+                          {formData.projects[projectKey].description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className={styles.rightFields}>
+                    <h2 className={styles.rightTitle}>Internships</h2>
+                    {Object.keys(formData.internships).map((internKey) => (
+                      <div key={internKey}>
+                        <h3 className={styles.projTitle}>
+                          - {formData.internships[internKey].company}
+                        </h3>
+                        <h3 className={styles.intDur}>
+                          Duration:- {formData.internships[internKey].duration}
+                        </h3>
+                        <p className={styles.projDesc}>
+                          {formData.internships[internKey].description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className={styles.rightFields}>
+                    <h2 className={styles.rightTitle}>
+                      Extracurricular Activities
+                    </h2>
+                    {Object.keys(formData.extraCurricular).map((exKey) => (
+                      <div key={exKey}>
+                        <h3 className={styles.projTitle}>
+                          - {formData.extraCurricular[exKey].name}
+                        </h3>
+                        <h3 className={styles.intDur}>
+                          {formData.extraCurricular[exKey].role}
+                        </h3>
+                        <p className={styles.projDesc}>
+                          {formData.extraCurricular[exKey].description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
