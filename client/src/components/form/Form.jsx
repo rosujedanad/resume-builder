@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import Loading from "../loading/Loading";
 import styles from "./styles.module.css";
+import { useNavigate } from "react-router-dom";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
+import Resume from "../resume/Resume";
 
 const Home = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [fullName, setFullName] = useState("");
-  const [currentPosition, setCurrentPosition] = useState("");
-  const [currentLength, setCurrentLength] = useState(1);
   const [address, setCurrentAddress] = useState("");
   const [state, setCurrentState] = useState("def");
   const [phno, setCurrentPhno] = useState("");
@@ -20,23 +24,114 @@ const Home = () => {
   const [qualif2br, setCurrentQualif2Branch] = useState("");
   const [qualif2mk, setCurrentQualif2Mark] = useState("");
   const [tecskill, setCurrentTecskill] = useState();
+  const [splitTecSkill, setCurrentSplitTec] = useState([]);
   const [sofskill, setCurrentSofskill] = useState();
   const [linkedin, setCurrentLinkedin] = useState();
   const [github, setCurrentGithub] = useState();
-  const [currentTechnologies, setCurrentTechnologies] = useState("");
-  const [headshot, setHeadshot] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [resumeData, setResumeData] = useState(null);
+
+  const token = localStorage.getItem("token");
+  const userid = localStorage.getItem("userid");
+
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log({
-      fullName,
-      currentPosition,
-      currentLength,
-      currentTechnologies,
-      headshot,
-    });
-    setLoading(true);
-  };
+    let formData = {
+      details: {
+        name: fullName,
+        email: mail,
+      },
+      contact: {
+        place: address,
+        state: state,
+        mobile: phno,
+        email: mail,
+        linkedin: linkedin,
+        github: github,
+      },
+      education: {
+        ug: { college: qualif1name, department: qualif1br, cgpa: qualif1mk },
+        hss: { school: qualif2name, stream: qualif2br, percentage: qualif2mk },
+      },
+      skills: {
+        technical: tecskill.split(","),
+        soft: sofskill.split(","),
+      },
+      projects: ProjInfo1.reduce((acc, project, index) => {
+        acc[`project${index + 1}`] = {
+          title: project.prName,
+          description: project.prDesc,
+        };
+        return acc;
+      }, {}),
+      internships: InternInfo.reduce((acc, internship, index) => {
+        acc[`internship${index + 1}`] = {
+          company: internship.intCompName,
+          duration: internship.intDur,
+          description: internship.intDesc,
+        };
+        return acc;
+      }, {}),
+      extraCurricular: ActInfo.reduce((acc, activity, index) => {
+        acc[`activity${index + 1}`] = {
+          name: activity.ActName,
+          role: activity.ActRole,
+          description: activity.ActDesc,
+        };
+        return acc;
+      }, {}),
+    };
+    
+    let resumedetails =  formData ;
+    resumedetails = {"userID":userid,"resumeID":"1",...resumedetails}
+
+    
+
+
+
+    const submitResumeData = async (resumedetails) => {
+      try {
+        console.log("Submitting resume data:", resumedetails);
+        
+    
+        
+    
+        // Once the response is received, continue with other actions
+        const about = await aboutapi(formData.skills);
+        if (!about) {
+          navigate('/loading');
+          return;
+        }
+    
+        const updatedResumeDetails = {...resumedetails, about: {about}};
+        setResumeData(updatedResumeDetails);
+        const response = await axios.post(
+          "http://localhost:3000/createResume",
+          updatedResumeDetails,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("Response:", response.data);
+        formData = updatedResumeDetails;
+        console.log("Updated resumedetails:", updatedResumeDetails);
+        const updatedResumeDetailsJSON = JSON.stringify(updatedResumeDetails);
+        console.log("Updated resumedetails:", updatedResumeDetailsJSON);
+    
+        // Assuming `resumeData` is defined elsewhere
+       // updatedResumeDetails && <Resume foormData={updatedResumeDetails} />;
+        //if(resumeData){navigate("/resume", { state: {resumeData }});}
+        navigate("/resume", { state: {formData}});
+      } catch (error) {
+        console.error("Error:", error.message);
+      }
+    };
+    
+    submitResumeData(resumedetails);
+  }    
 
   //Adding Project
 
@@ -124,6 +219,23 @@ const Home = () => {
   // }
 
   // run();
+  const aboutapi = async (skills) => {
+      const genAI = new GoogleGenerativeAI(
+    "AIzaSyDbvLnLCALnrt_X4Ydr-nY2zmg-M1JqyV8"
+  );
+   // For text-only input, use the gemini-pro model
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  skills = JSON.stringify(skills)
+  console.log("skills",skills.technical);
+    const prompt = `i am writing a resume. write an about section for a resume for a engineer with the following skills: ${skills} in about 100 words.`;
+    console.log(prompt)
+
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const text = response.text();
+    console.log(text);
+    return text;
+  }
 
   return (
     <div className={styles.app}>
@@ -165,33 +277,6 @@ const Home = () => {
               onChange={(e) => setFullName(e.target.value)}
               placeholder="Eg: John Doe"
             />
-
-            <div>
-              <label htmlFor="currentLength" className={styles.heading}>
-                For how long? (year)
-              </label>
-              <input
-                type="number"
-                required
-                name="currentLength"
-                className={styles.fields1}
-                value={currentLength}
-                onChange={(e) => setCurrentLength(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="currentTechnologies" className={styles.heading}>
-                Technologies used
-              </label>
-              <input
-                type="text"
-                required
-                name="currentTechnologies"
-                className={styles.fields1}
-                value={currentTechnologies}
-                onChange={(e) => setCurrentTechnologies(e.target.value)}
-              />
-            </div>
 
             <div className={styles.detailset}>
               <label className={styles.mhead}>Contact Details:</label>
@@ -437,19 +522,6 @@ const Home = () => {
               </div>
             </div>
 
-            <label htmlFor="photo" className={styles.heading}>
-              Upload your headshot image
-            </label>
-            <input
-              className={styles.fields1}
-              type="file"
-              name="photo"
-              required
-              id="photo"
-              accept="image/x-png,image/jpeg"
-              onChange={(e) => setHeadshot(e.target.files[0])}
-            />
-
             <label className={styles.mhead}>Projects you've worked on:</label>
             <form>
               {ProjInfo1.map((project, index) => (
@@ -651,12 +723,46 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <button className={styles.mbutton}>Create Resume</button>
+            <button className={styles.mbutton} onClick={handleFormSubmit}>
+              Create Resume
+            </button>
           </form>
         </div>
       </div>
     </div>
   );
+
+  const handleTecSkillchange = (e) => {
+    const inputValue = e.target.value;
+    setCurrentTecskill(inputValue);
+    const TecSkillArr = inputValue.split(",").map((skill) => skill.trim());
+    setCurrentSplitTec(splitTecSkill);
+  };
+
+  const userObject = () => {
+    const details = {
+      name: fullName,
+      email: mail,
+    };
+    const contact = {
+      place: address,
+      state: state,
+      mobile: phno,
+      email: mail,
+      linkIn: linkedin,
+      gHub: github,
+    };
+    const education = {
+      qualifa: qualif1,
+      qualifaname: qualif1name,
+      qualifabr: qualif1br,
+      qualifamk: qualif1mk,
+      qualifb: qualif2,
+      qualifbname: qualif2name,
+      qualifbbr: qualif2br,
+      qualifbmk: qualif2mk,
+    };
+  };
 };
 
 export default Home;
