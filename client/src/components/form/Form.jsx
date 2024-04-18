@@ -34,7 +34,6 @@ const Home = () => {
   const token = localStorage.getItem("token");
   const userid = localStorage.getItem("userid");
 
-
   const handleFormSubmit = (e) => {
     e.preventDefault();
     let formData = {
@@ -82,29 +81,22 @@ const Home = () => {
         return acc;
       }, {}),
     };
-    
-    let resumedetails =  formData ;
-    resumedetails = {"userID":userid,"resumeID":"1",...resumedetails}
 
-    
-
-
+    let resumedetails = formData;
+    resumedetails = { userID: userid, resumeID: "1", ...resumedetails };
 
     const submitResumeData = async (resumedetails) => {
       try {
         console.log("Submitting resume data:", resumedetails);
-        
-    
-        
-    
+
         // Once the response is received, continue with other actions
         const about = await aboutapi(formData.skills);
         if (!about) {
-          navigate('/loading');
+          navigate("/loading");
           return;
         }
-    
-        const updatedResumeDetails = {...resumedetails, about: {about}};
+
+        const updatedResumeDetails = { ...resumedetails, about: { about } };
         setResumeData(updatedResumeDetails);
         const response = await axios.post(
           "http://localhost:3000/createResume",
@@ -120,18 +112,18 @@ const Home = () => {
         console.log("Updated resumedetails:", updatedResumeDetails);
         const updatedResumeDetailsJSON = JSON.stringify(updatedResumeDetails);
         console.log("Updated resumedetails:", updatedResumeDetailsJSON);
-    
+
         // Assuming `resumeData` is defined elsewhere
-       // updatedResumeDetails && <Resume foormData={updatedResumeDetails} />;
+        // updatedResumeDetails && <Resume foormData={updatedResumeDetails} />;
         //if(resumeData){navigate("/resume", { state: {resumeData }});}
-        navigate("/resume", { state: {formData}});
+        navigate("/resume", { state: { formData } });
       } catch (error) {
         console.error("Error:", error.message);
       }
     };
-    
+
     submitResumeData(resumedetails);
-  }    
+  };
 
   //Adding Project
 
@@ -220,22 +212,22 @@ const Home = () => {
 
   // run();
   const aboutapi = async (skills) => {
-      const genAI = new GoogleGenerativeAI(
-    "AIzaSyDbvLnLCALnrt_X4Ydr-nY2zmg-M1JqyV8"
-  );
-   // For text-only input, use the gemini-pro model
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-  skills = JSON.stringify(skills)
-  console.log("skills",skills.technical);
-    const prompt = `i am writing a resume. write an about section for a resume for a engineer with the following skills: ${skills} in about 100 words.`;
-    console.log(prompt)
+    const genAI = new GoogleGenerativeAI(
+      "AIzaSyDbvLnLCALnrt_X4Ydr-nY2zmg-M1JqyV8"
+    );
+    // For text-only input, use the gemini-pro model
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    skills = JSON.stringify(skills);
+    console.log("skills", skills.technical);
+    const prompt = `i am writing a resume. write an about section for a resume for a engineer with the following skills: ${skills} in about 30-35 words.`;
+    console.log(prompt);
 
     const result = await model.generateContent(prompt);
     const response = result.response;
     const text = response.text();
     console.log(text);
     return text;
-  }
+  };
 
   return (
     <div className={styles.app}>
