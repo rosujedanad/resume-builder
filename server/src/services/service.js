@@ -286,6 +286,3 @@ exports.updateResume = async (userid,updateData) => {
     return res.status(500).json({ error: 'error updating resume' });
   }
 }
-
-};
-
