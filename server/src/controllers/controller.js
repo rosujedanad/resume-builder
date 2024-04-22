@@ -54,3 +54,20 @@ exports.viewResume = async (req,res) => {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
+
+exports.updateResume = async (req,res) => {
+  try{
+    console.log("updating")
+    const userid = req.query.userid;
+    const updetails =req.body
+    console.log(userid,"userid")
+    const resumeDetails = await Service.updateResume(userid, updetails);    
+    if(!resumeDetails) {
+      return res.status(404).json({error : "Resume not found"})
+    }
+    return res.json(resumeDetails);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+}

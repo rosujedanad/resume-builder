@@ -75,7 +75,7 @@ exports.signin = async (token) => {
 
 exports.CreateResume = async (details) => {
   try{
-    console.log('details',details.userID);
+    console.log('details',details);
 
       const newContact = new contactData({
         UserID : details.userID,
@@ -131,7 +131,7 @@ exports.CreateResume = async (details) => {
 
     const newInternships = Object.values(details.internships).map((internship) => ({
       company: internship.company,
-      role: internship.role,
+      // role: internship.role,
       duration: internship.duration,
       description: internship.description
   }));
@@ -235,6 +235,41 @@ exports.viewResume = async (userid) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+exports.updateResume = async (userid,updateData) => {
+  try {         
+    await contactData.findOneAndUpdate(
+      {"UserID":userid},
+      updateData.contact, 
+      { new: true, upsert: true });
+    await eduData.findOneAndUpdate(
+      {"UserID":userid},
+      updateData.education, 
+      {new:true, upsert:true});
+    await skillData.findOneAndUpdate(
+      {"UserID":userid},
+      updateData.skills, 
+      {new:true, upsert:true});
+    await projectData.findOneAndUpdate(
+      {"UserID":userid},
+      updateData.projects, 
+      {new:true, upsert:true});
+    await internData.findOneAndUpdate(
+      {"UserID":userid},
+      updateData.internships, 
+      {new:true, upsert:true});
+    await activityData.findOneAndUpdate(
+      {"UserID":userid},
+      updateData.extraCurricular, 
+      {new:true, upsert:true});
+    
+    return { message: 'Resume updated successfully' };
+
+  } catch(error){
+    console.log(error);
+    return res.status(500).json({ error: 'error updating resume' });
   }
 }
 
