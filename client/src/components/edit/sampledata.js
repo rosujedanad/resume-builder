@@ -14,15 +14,15 @@ const sampleData = {
   education: {
     ed1: {
       qualif: "UG",
-      college: "ABC College",
+      institute: "ABC College",
       department: "Computer Science",
       cgpa: "8.5",
     },
     ed2: {
       qualif: "SS",
-      school: "XYZ School",
-      stream: "Computer Science",
-      percentage: "90",
+      institute: "XYZ School",
+      department: "Computer Science",
+      cgpa: "90",
     },
   },
   skills: {

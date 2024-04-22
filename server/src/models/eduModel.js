@@ -12,12 +12,10 @@ const eduDataSchema = new mongoose.Schema({
   },
   education: [
     {
-      college: { type: String, required: true },
+      qualif: { type: String, required: true },
+      institute: { type: String, required: true },
       department: { type: String, required: true },
       cgpa: { type: String, required: true },
-      school: { type: String, required: true },
-      stream: { type: String, required: true },
-      percentage: { type: Number, required: true },
     },
   ],
 });
