@@ -174,68 +174,82 @@ await newActivityData.save();
 
 exports.viewResume = async (userid) => {
   try {
-    let contact = await contactData.findOne({ UserID:userid});
-    contact = {"UserID": contact.UserID,
-                "resumeID": contact.resumeID,
-                "contact":{
-                "place": contact.place,
-                "state": contact.state,
-                "mobile": contact.mobile,
-                "email": contact.email,
-                "linkedin": contact.linkedin,
-                "github": contact.github}}
-
-    let education = await eduData.findOne({ UserID:userid});
-    education = {"ug":{"college": education.ug.college,
-                  "department": education.ug.department,  
-                  "cgpa": education.ug.cgpa},
-                  "hss":{
-                  "school": education.hss.school, 
-                  "stream": education.hss.stream,
-                  "percentage": education.hss.percentage}}
-
-    let skills = await skillData.findOne({ UserID:userid});
-    skills = {"skills": {"technical": skills.technical,
-                        "soft": skills.soft}}
-
-    let projects = await projectData.findOne({ UserID:userid});
-    const modprojects = projects.projects.map((project) =>
-                    (
-                    {"title":project.title,
-                     "description":project.description,
-                     "techStack":project.techStack,
-                     "link":project.link }))
-    const newProjectData = {
-      projects: modprojects
+    let contact = await contactData.findOne({ UserID: userid });
+    contact = {
+      UserID: contact.UserID,
+      resumeID: contact.resumeID,
+      contact: {
+        place: contact.place,
+        state: contact.state,
+        mobile: contact.mobile,
+        email: contact.email,
+        linkedin: contact.linkedin,
+        github: contact.github,
+      },
     };
 
-    let internships = await internData.findOne({ UserID:userid});
-    const modinternships = internships.internships.map((internship) =>
-                  ({
-                    "company": internship.company,
-                    "role": internship.role,
-                    "duration": internship.duration,
-                    "description": internship.description}
-    ))
-    const newInternData = {
-      projects: modinternships
+    let education = await eduData.findOne({ UserID: userid });
+    education = {
+      ug: {
+        college: education.ug.college,
+        department: education.ug.department,
+        cgpa: education.ug.cgpa,
+      },
+      hss: {
+        school: education.hss.school,
+        stream: education.hss.stream,
+        percentage: education.hss.percentage,
+      },
     };
 
-    let extraCurricular = await activityData.findOne({ UserID:userid});
-    const modact =extraCurricular.extraCurricular.map((activity) =>
-      ({ "name":activity.name,
-        "description": activity.description
-      }))
-    const newAct ={
-      extraCurricular:modact
-    }
+    let skills = await skillData.findOne({ UserID: userid });
+    skills = {
+      technical: skills.technical,
+      soft: skills.soft,
+    };
 
-    const resumeDetails = { contact, education, skills, modprojects, modinternships, modact};
+    let projectsData = await projectData.findOne({ UserID: userid });
+    const projects = projectsData.projects.map((project, index) => ({
+      [`project${index + 1}`]: {
+        title: project.title,
+        description: project.description,
+        techStack: project.techStack,
+        link: project.link,
+      },
+    }));
+
+    let internshipsData = await internData.findOne({ UserID: userid });
+    const internships = internshipsData.internships.map((internship, index) => ({
+      [`internships${index + 1}`]: {
+        company: internship.company,
+        role: internship.role,
+        duration: internship.duration,
+        description: internship.description,
+      },
+    }));
+
+    let extraCurricularData = await activityData.findOne({ UserID: userid });
+    const extraCurricular = extraCurricularData.extraCurricular.map((activity, index) => ({
+      [`activity${index + 1}`]: {
+        name: activity.name,
+        description: activity.description,
+      },
+    }));
+
+    const resumeDetails = {
+      contact,
+      education,
+      skills,
+      projects: Object.assign({}, ...projects),
+      internships: Object.assign({}, ...internships),
+      extraCurricular: Object.assign({}, ...extraCurricular),
+    };
     return resumeDetails;
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return { error: 'Internal Server Error' };
   }
+
 }
 
 exports.updateResume = async (userid,updateData) => {
@@ -272,4 +286,3 @@ exports.updateResume = async (userid,updateData) => {
     return res.status(500).json({ error: 'error updating resume' });
   }
 }
-
