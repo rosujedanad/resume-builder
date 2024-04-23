@@ -1,69 +1,76 @@
 // Import any required models here
 // const Example = require('../models/example');
-const { OAuth2Client } = require('google-auth-library');
+const { OAuth2Client } = require("google-auth-library");
 // const jwt = require('jsonwebtoken');
 
-const userData = require('../models/userModel');
-const contactData = require('../models/contactModel');
-const eduData = require('../models/eduModel');
-const skillData = require('../models/skillModel');
-const projectData = require('../models/projectModel');
-const internData = require('../models/internModel');
-const activityData = require('../models/activityModel');
+const userData = require("../models/userModel");
+const contactData = require("../models/contactModel");
+const eduData = require("../models/eduModel");
+const skillData = require("../models/skillModel");
+const projectData = require("../models/projectModel");
+const internData = require("../models/internModel");
+const activityData = require("../models/activityModel");
 
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 
 // Define your service methods
 exports.getExamples = async () => {
   return "value";
-
 };
 
 exports.signin = async (token) => {
   try {
     console.log("token", token);
     const requestOptions = {
-      method: 'GET',
+      method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
-        Accept: 'application/json'
-      }
+        Accept: "application/json",
+      },
     };
 
-    const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`, requestOptions);
-    
+    const response = await fetch(
+      `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`,
+      requestOptions
+    );
+
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error("Network response was not ok");
     }
 
     const data = await response.json();
-    const {name, email, picture} = data;
+    const { name, email, picture } = data;
 
-    console.log('name', name, 'email', email,'picture', picture);
-    const user = await userData.findOne({Email:email});
-    let userid = user ? user.UserID : '';
+    console.log("name", name, "email", email, "picture", picture);
+    const user = await userData.findOne({ Email: email });
+    let userid = user ? user.UserID : "";
     let resumeCount = user ? user.ResumeCount : 0;
-    if(user){
-      console.log('User already exists');
-    }
-    else{
-
-      userid =  uuidv4();
+    if (user) {
+      console.log("User already exists");
+    } else {
+      userid = uuidv4();
       const newUser = new userData({
-        UserID : userid,
+        UserID: userid,
         Name: name,
         Email: email,
         Picture: picture,
-        ResumeCount: 0
+        ResumeCount: 0,
       });
       await newUser.save();
     }
     return {
       statusCode: 200,
-      body: { message: 'User signed in successfully',"userid":userid,"name":name,"email":email,"picture":picture,"resumecount":resumeCount },
+      body: {
+        message: "User signed in successfully",
+        userid: userid,
+        name: name,
+        email: email,
+        picture: picture,
+        resumecount: resumeCount,
+      },
     };
   } catch (error) {
-    console.error('There was a problem with your fetch operation:', error);
+    console.error("There was a problem with your fetch operation:", error);
 
     return {
       statusCode: 500,
@@ -72,204 +79,223 @@ exports.signin = async (token) => {
   }
 };
 
-
 exports.CreateResume = async (details) => {
-  try{
-    console.log('details',details);
+  try {
+    console.log("details", details);
 
-      const newContact = new contactData({
-        UserID : details.userID,
-        resumeID : details.resumeID,
-        place: details.contact.place,
-        state : details.contact.state,
-        mobile : details.contact.mobile,
-        email : details.contact.email,
-        linkedin : details.contact.linkedin,
-        github : details.contact.github
-      });
-      await newContact.save();
-
-      const newEdu = new eduData({
-        UserID : details.userID,
-        resumeID : details.resumeID,
-        ug : {
-          college : details.education.ug.college,
-          department : details.education.ug.department,
-          cgpa : details.education.ug.cgpa
-        },
-        hss :{
-          school : details.education.hss.school,
-          stream : details.education.hss.stream,
-          percentage :details.education.hss.percentage
-        }
-      }); 
-      await newEdu.save();
-
-      const newSkill = new skillData({
-        UserID : details.userID,
-        resumeID : details.resumeID,
-        technical :details.skills.technical,
-        soft :details.skills.soft,
-      });
-      await newSkill.save();  
-
-      const newProjects = Object.values(details.projects).map((project) => ({
-        title: project.title,
-        description: project.description,
-        techStack: project.techStack,
-        link: project.link
-    }));
-    
-    const newProjectData = new projectData({
-        UserID: details.userID,
-        resumeID: details.resumeID,
-        projects: newProjects
-    });
-    
-    await newProjectData.save();
-     
-
-    const newInternships = Object.values(details.internships).map((internship) => ({
-      company: internship.company,
-      // role: internship.role,
-      duration: internship.duration,
-      description: internship.description
-  }));
-  
-  const newInternData = new internData({
+    const newContact = new contactData({
       UserID: details.userID,
       resumeID: details.resumeID,
-      internships: newInternships
-  });
-  
-  await newInternData.save();
+      name: details.details.name,
+      place: details.contact.place,
+      state: details.contact.state,
+      mobile: details.contact.mobile,
+      email: details.contact.email,
+      linkedin: details.contact.linkedin,
+      github: details.contact.github,
+    });
+    await newContact.save();
 
-  const newActivities = Object.values(details.extraCurricular).map((activity) => ({
-    name: activity.name,
-    description: activity.description
-}));
+    const educationDetails = Object.values(details.education).map((edu) => ({
+      qualif: edu.qualif,
+      institute: edu.institute,
+      department: edu.department,
+      cgpa: edu.cgpa,
+    }));
 
-const newActivityData = new activityData({
-    UserID: details.userID,
-    resumeID: details.resumeID,
-    extraCurricular: newActivities
-});
+    const newEdu = new eduData({
+      UserID: details.userID,
+      resumeID: details.resumeID,
+      education: educationDetails,
+    });
 
-await newActivityData.save();
+    await newEdu.save();
+
+    const newSkill = new skillData({
+      UserID: details.userID,
+      resumeID: details.resumeID,
+      technical: details.skills.technical,
+      soft: details.skills.soft,
+    });
+    await newSkill.save();
+
+    const newProjects = Object.values(details.projects).map((project) => ({
+      title: project.title,
+      description: project.description,
+      techStack: project.techStack,
+      link: project.link,
+    }));
+
+    const newProjectData = new projectData({
+      UserID: details.userID,
+      resumeID: details.resumeID,
+      projects: newProjects,
+    });
+
+    await newProjectData.save();
+
+    const newInternships = Object.values(details.internships).map(
+      (internship) => ({
+        company: internship.company,
+        // role: internship.role,
+        duration: internship.duration,
+        description: internship.description,
+      })
+    );
+
+    const newInternData = new internData({
+      UserID: details.userID,
+      resumeID: details.resumeID,
+      internships: newInternships,
+    });
+
+    await newInternData.save();
+
+    const newActivities = Object.values(details.extraCurricular).map(
+      (activity) => ({
+        name: activity.name,
+        description: activity.description,
+      })
+    );
+
+    const newActivityData = new activityData({
+      UserID: details.userID,
+      resumeID: details.resumeID,
+      extraCurricular: newActivities,
+    });
+
+    await newActivityData.save();
 
     return {
       statusCode: 200,
-      body: { message: 'Resume created successfully' },
+      body: { message: "Resume created successfully" },
     };
-  }
-  catch(error){
-    console.error('There was a problem with your fetch operation:', error);
+  } catch (error) {
+    console.error("There was a problem with your fetch operation:", error);
 
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),
     };
   }
-}
+};
 
 exports.viewResume = async (userid) => {
   try {
-    let contact = await contactData.findOne({ UserID:userid});
-    contact = {"UserID": contact.UserID,
-                "resumeID": contact.resumeID,
-                "contact":{
-                "place": contact.place,
-                "state": contact.state,
-                "mobile": contact.mobile,
-                "email": contact.email,
-                "linkedin": contact.linkedin,
-                "github": contact.github}}
-
-    let education = await eduData.findOne({ UserID:userid});
-    education = {"ug":{"college": education.ug.college,
-                  "department": education.ug.department,  
-                  "cgpa": education.ug.cgpa},
-                  "hss":{
-                  "school": education.hss.school, 
-                  "stream": education.hss.stream,
-                  "percentage": education.hss.percentage}}
-
-    let skills = await skillData.findOne({ UserID:userid});
-    skills = {"skills": {"technical": skills.technical,
-                        "soft": skills.soft}}
-
-    let projects = await projectData.findOne({ UserID:userid});
-    const modprojects = projects.projects.map((project) =>
-                    (
-                    {"title":project.title,
-                     "description":project.description,
-                     "techStack":project.techStack,
-                     "link":project.link }))
-    const newProjectData = {
-      projects: modprojects
+    let contact = await contactData.findOne({ UserID: userid });
+    details = {
+      name: contact.name,
+      email: contact.email,
+    };
+    contact = {
+      place: contact.place,
+      state: contact.state,
+      mobile: contact.mobile,
+      email: contact.email,
+      linkedin: contact.linkedin,
+      github: contact.github,
     };
 
-    let internships = await internData.findOne({ UserID:userid});
-    const modinternships = internships.internships.map((internship) =>
-                  ({
-                    "company": internship.company,
-                    "role": internship.role,
-                    "duration": internship.duration,
-                    "description": internship.description}
-    ))
-    const newInternData = {
-      projects: modinternships
+    let eduDatas = await eduData.findOne({ UserID: userid });
+
+    const education = eduDatas.education.map((ed, index) => ({
+      [`ed${index + 1}`]: {
+        qualif: ed.qualif,
+        institute: ed.institute,
+        department: ed.department,
+        cgpa: ed.cgpa,
+      },
+    }));
+
+    let skills = await skillData.findOne({ UserID: userid });
+    skills = {
+      technical: skills.technical,
+      soft: skills.soft,
     };
 
-    let extraCurricular = await activityData.findOne({ UserID:userid});
-    const modact =extraCurricular.extraCurricular.map((activity) =>
-      ({ "name":activity.name,
-        "description": activity.description
-      }))
-    const newAct ={
-      extraCurricular:modact
-    }
+    let projectsData = await projectData.findOne({ UserID: userid });
+    const projects = projectsData.projects.map((project, index) => ({
+      [`project${index + 1}`]: {
+        title: project.title,
+        description: project.description,
+        techStack: project.techStack,
+        link: project.link,
+      },
+    }));
 
-    const resumeDetails = { contact, education, skills, modprojects, modinternships, modact};
+    let internshipsData = await internData.findOne({ UserID: userid });
+    const internships = internshipsData.internships.map(
+      (internship, index) => ({
+        [`internships${index + 1}`]: {
+          company: internship.company,
+          role: internship.role,
+          duration: internship.duration,
+          description: internship.description,
+        },
+      })
+    );
+
+    let extraCurricularData = await activityData.findOne({ UserID: userid });
+    const extraCurricular = extraCurricularData.extraCurricular.map(
+      (activity, index) => ({
+        [`activity${index + 1}`]: {
+          name: activity.name,
+          description: activity.description,
+        },
+      })
+    );
+
+    const resumeDetails = {
+      userID: "userid",
+      resumeID: "987654",
+      details,
+      contact,
+      education,
+      skills,
+      projects: Object.assign({}, ...projects),
+      internships: Object.assign({}, ...internships),
+      extraCurricular: Object.assign({}, ...extraCurricular),
+    };
     return resumeDetails;
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return { error: "Internal Server Error" };
   }
-}
+};
 
-exports.updateResume = async (userid,updateData) => {
-  try {         
-    await contactData.findOneAndUpdate(
-      {"UserID":userid},
-      updateData.contact, 
-      { new: true, upsert: true });
-    await eduData.findOneAndUpdate(
-      {"UserID":userid},
-      updateData.education, 
-      {new:true, upsert:true});
-    await skillData.findOneAndUpdate(
-      {"UserID":userid},
-      updateData.skills, 
-      {new:true, upsert:true});
+exports.updateResume = async (userid, updateData) => {
+  try {
+    await contactData.findOneAndUpdate({ UserID: userid }, updateData.contact, {
+      new: true,
+      upsert: true,
+    });
+    await eduData.findOneAndUpdate({ UserID: userid }, updateData.education, {
+      new: true,
+      upsert: true,
+    });
+    await skillData.findOneAndUpdate({ UserID: userid }, updateData.skills, {
+      new: true,
+      upsert: true,
+    });
     await projectData.findOneAndUpdate(
-      {"UserID":userid},
-      updateData.projects, 
-      {new:true, upsert:true});
+      { UserID: userid },
+      updateData.projects,
+      { new: true, upsert: true }
+    );
     await internData.findOneAndUpdate(
-      {"UserID":userid},
-      updateData.internships, 
-      {new:true, upsert:true});
+      { UserID: userid },
+      updateData.internships,
+      { new: true, upsert: true }
+    );
     await activityData.findOneAndUpdate(
-      {"UserID":userid},
-      updateData.extraCurricular, 
-      {new:true, upsert:true});
-    
-    return { message: 'Resume updated successfully' };
+      { UserID: userid },
+      updateData.extraCurricular,
+      { new: true, upsert: true }
+    );
 
-  } catch(error){
+    return { message: "Resume updated successfully" };
+  } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: 'error updating resume' });
+    return res.status(500).json({ error: "error updating resume" });
   }
-}
-
+};
