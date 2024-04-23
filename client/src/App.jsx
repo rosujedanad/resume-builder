@@ -8,6 +8,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import Loading from "./components/loading/Loading";
 import ErrorPage from "./components/error/ErrorPage";
 import Homepage from "./components/home/Homepage";
+import Form from "./components/form/Form";
 
 const App = () => {
   // Retrieve authentication status from localStorage on component mount
@@ -29,9 +30,10 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Signin />} />
             <Route path="/loading" element={<Loading />} />
-            <Route path="/form" element={<Home />} />
             <Route path="/error" element={<ErrorPage />} />
             <Route path="/resume" element={<Resume />} />
+            <Route path="/homepage" element={<Homepage />} />
+            <Route path="/form" element={<Form />} />
           </Routes>
         </BrowserRouter>
       </GoogleOAuthProvider>
