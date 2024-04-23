@@ -29,10 +29,10 @@ function Homepage() {
           <div className={styles.createbutton}>
             <button  onClick={() => navigate("/Form")} className={styles.cre_button}>
             <img src="../../src/assets/plus.png" alt="plus sign"/>
-            <p>create new resume</p>
+            <p>create resume</p>
             </button>
           </div>
-          <div className="styles.resblock">
+          <div className={styles.resblock}>
             {[...Array(resumeCount)].map((_, index) => (
                     <Resumeblock key={index} value={index} />
                 ))}
