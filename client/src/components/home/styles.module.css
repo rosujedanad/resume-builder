@@ -102,9 +102,9 @@
     justify-content: center;
     margin-top: 30px;
     background-color: #0d4158cf;
-    height:200px;
-    width:180px;
-    margin-left: 120px;
+    height:160px;
+    width:160px;
+    margin-left: 70px;
     margin-top:150px;
     border-radius: 20px;
 }
@@ -117,7 +117,7 @@
     font-size: 45px;
 }
 .template{
-    margin-left:20px;
+    margin-left:40px;
     height:500px;
     width:480px;
     border-radius: 20px;

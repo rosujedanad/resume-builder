@@ -18,7 +18,7 @@ function Homepage() {
   //   }
   //   return blocks;
   // };
-  const resumeCount = 3
+  const resumeCount = 6
 
   return (
     <div className={styles.maincontainer}>

@@ -1,14 +1,28 @@
 
 .resublock {
-    width: 160px;
-    height: 160px; 
+    width: 130px;
+    height: 130px; 
     background-color:#0d41589e; 
     border-radius: 20px; 
     display: flex;
+    flex-direction: flex-end;
     justify-content: center;
     align-items: center;
     color: #fff;
     font-size:18px;
     margin-left:70px;
-    margin-top:60px;
-  }
+    margin-top:20px;
+    position: relative;
+}
+
+.editbutton{
+  background-color: transparent;
+  border:none;
+  text-decoration: underline;
+  color: #fff;
+  font-size: 13px;
+  position: absolute;
+  bottom: 12px; 
+  transform: translateY(50%);
+  cursor: pointer;
+}
