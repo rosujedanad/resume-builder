@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/form/Form";
 import Resume from "./components/resume/Resume";
+import EditPage from "./components/edit/Edit";
 import Signin from "./components/signin/Signin";
 import { Navigate } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -31,6 +32,7 @@ const App = () => {
             <Route path="/form" element={<Home />} />
             <Route path="/error" element={<ErrorPage />} />
             <Route path="/resume" element={<Resume />} />
+            <Route path="/edit" element={<EditPage />} />
           </Routes>
         </BrowserRouter>
       </GoogleOAuthProvider>
