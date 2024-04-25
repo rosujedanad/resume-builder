@@ -1,17 +1,18 @@
 
 .resublock {
-    width: 130px;
-    height: 130px; 
-    background-color:#0d41589e; 
+    width: 140px;
+    height: 180px; 
+    background-color:#1f5369fc; 
     border-radius: 20px; 
     display: flex;
-    flex-direction: flex-end;
+    flex-direction: column;
     justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     color: #fff;
     font-size:18px;
-    margin-left:70px;
-    margin-top:20px;
+    margin-left:40px;
+    margin-top:50px;
     position: relative;
 }
 
@@ -25,4 +26,10 @@
   bottom: 12px; 
   transform: translateY(50%);
   cursor: pointer;
+}
+
+.resublock > img{
+  width:140px;
+  height:110px;
+  border-radius: 10px; 
 }

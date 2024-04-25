@@ -18,7 +18,19 @@ function Homepage() {
   //   }
   //   return blocks;
   // };
-  const resumeCount = 6
+  const resumeCount = 6;
+  const calculateGrid = (count) => {
+    if (count === 1) {
+      return '1fr';
+    } else if (count <= 2) {
+      return 'repeat(1, 1fr)';
+    } else if (count <= 6) {
+      return 'repeat(3, 1fr)';
+    } else {
+      return 'repeat(3, 1fr)';
+    }
+  };
+  
 
   return (
     <div className={styles.maincontainer}>
@@ -32,7 +44,7 @@ function Homepage() {
             <p>create resume</p>
             </button>
           </div>
-          <div className={styles.resblock}>
+          <div className={styles.resblock} style={{ gridTemplateColumns: calculateGrid(resumeCount) }}>
             {[...Array(resumeCount)].map((_, index) => (
                     <Resumeblock key={index} value={index} />
                 ))}

@@ -15,7 +15,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 30px;
   }
   .maincontainer > p {
     margin-bottom: 30px;
@@ -85,9 +84,12 @@
     display: flex;
     margin: auto;
     margin-top: 50px;
-    width: 1200px;
-    height: 500px;
-    background-color: #ffffffbe;
+    width: 1300px;
+    height: 530px;
+    background-color: #f0f8fbfc;
+    background-image:url("../../src/assets/wave2.png"); 
+    background-size: cover; 
+    background-position: center;
     box-shadow: 3px 4px 36px -6px rgba(0,0,0,0.4);
     border-radius: 20px;
 }
@@ -101,11 +103,11 @@
     align-items: center;
     justify-content: center;
     margin-top: 30px;
-    background-color: #0d4158cf;
+    background-color: #1f5369fc;
     height:160px;
     width:160px;
     margin-left: 70px;
-    margin-top:150px;
+    margin-top:180px;
     border-radius: 20px;
 }
 .cre_button > p{
@@ -117,9 +119,9 @@
     font-size: 45px;
 }
 .template{
-    margin-left:40px;
-    height:500px;
-    width:480px;
+    /* margin-left:30px; */
+    height:530px;
+    width: 450px;
     border-radius: 20px;
 }
 .cre_button > img{
@@ -131,15 +133,14 @@
   width:150px;
   height:150px;
   background-color: #0d41589e;
-  margin:10px;
 }
 .rightcontainer{
   display:flex;
-  margin-left:10px;
   width:1000px;
 }
 .resblock {
+  margin-top: 20px;
+  margin-left:40px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5px;
+  gap: 0.3px;
 }
