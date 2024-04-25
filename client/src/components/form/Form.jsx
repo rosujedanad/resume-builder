@@ -32,9 +32,12 @@ const Home = () => {
   const [resumeData, setResumeData] = useState(null);
   const [resumedetails, setResumedetails] = useState(null);
   const [ProjInfo1, setProjInfo1] = useState([{ prName: "", prDesc: "" }]);
-  const [InternInfo, setInternInfo] = useState([{ intCompName: "", intDur: "", intDesc: "" }]);
-  const [ActInfo, setActInfo] = useState([{ ActName: "", ActRole: "", ActDesc: "" }]);
-
+  const [InternInfo, setInternInfo] = useState([
+    { intCompName: "", intDur: "", intDesc: "" },
+  ]);
+  const [ActInfo, setActInfo] = useState([
+    { ActName: "", ActRole: "", ActDesc: "" },
+  ]);
 
   const token = localStorage.getItem("token");
   const userid = localStorage.getItem("userid");
@@ -55,8 +58,18 @@ const Home = () => {
         github: github,
       },
       education: {
-        ug: { college: qualif1name, department: qualif1br, cgpa: qualif1mk },
-        hss: { school: qualif2name, stream: qualif2br, percentage: qualif2mk },
+        ed1: {
+          qualif: qualif1,
+          institute: qualif1name,
+          department: qualif1br,
+          cgpa: qualif1mk,
+        },
+        ed2: {
+          qualif: qualif2,
+          institute: qualif2name,
+          department: qualif2br,
+          cgpa: qualif2mk,
+        },
       },
       skills: {
         technical: tecskill.split(","),
@@ -129,10 +142,10 @@ const Home = () => {
 
     submitResumeData(resumedetails);
   };
-  console.log("res",resumedetails);
+  console.log("res", resumedetails);
   const submitResumeData = async (res) => {
     try {
-      console.log("dsffdfe",{res})
+      console.log("dsffdfe", { res });
       const response = await axios.post(
         "http://localhost:3000/createResume",
         res,
@@ -149,7 +162,8 @@ const Home = () => {
     }
   };
 
-  const handleAddProj = () => setProjInfo1([...ProjInfo1, { prName: "", prDesc: "" }]);
+  const handleAddProj = () =>
+    setProjInfo1([...ProjInfo1, { prName: "", prDesc: "" }]);
 
   const handleRemoveProj = (index) => {
     const ProjList = [...ProjInfo1];
@@ -164,7 +178,11 @@ const Home = () => {
     setProjInfo1(ProjList);
   };
 
-  const handleAddInt = () => setInternInfo([...InternInfo, { intCompName: "", intDur: "", intDesc: "" }]);
+  const handleAddInt = () =>
+    setInternInfo([
+      ...InternInfo,
+      { intCompName: "", intDur: "", intDesc: "" },
+    ]);
 
   const handleRemoveInt = (index) => {
     const IntList = [...InternInfo];
@@ -179,7 +197,8 @@ const Home = () => {
     setInternInfo(IntList);
   };
 
-  const handleAddAct = () => setActInfo([...ActInfo, { ActName: "", ActRole: "", ActDesc: "" }]);
+  const handleAddAct = () =>
+    setActInfo([...ActInfo, { ActName: "", ActRole: "", ActDesc: "" }]);
 
   const handleRemoveAct = (index) => {
     const ActList = [...ActInfo];
@@ -550,7 +569,7 @@ const Home = () => {
                   </div>
 
                   <div className="btn__group">
-                    {ProjInfo1.length - 1 === index && ProjInfo1.length < 4 && (
+                    {ProjInfo1.length - 1 === index && ProjInfo1.length < 2 && (
                       <button className={styles.addBtn} onClick={handleAddProj}>
                         +
                       </button>
@@ -613,7 +632,7 @@ const Home = () => {
 
                   <div className="btn__group">
                     {InternInfo.length - 1 === index &&
-                      InternInfo.length < 4 && (
+                      InternInfo.length < 2 && (
                         <button
                           className={styles.addBtn}
                           onClick={handleAddInt}
@@ -675,7 +694,7 @@ const Home = () => {
                   </div>
 
                   <div className="btn__group">
-                    {ActInfo.length - 1 === index && ActInfo.length < 4 && (
+                    {ActInfo.length - 1 === index && ActInfo.length < 2 && (
                       <button className={styles.addBtn} onClick={handleAddAct}>
                         +
                       </button>
@@ -720,7 +739,10 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <button className={styles.mbutton} onClick={() => submitResumeData(resumedetails)}>
+            <button
+              className={styles.mbutton}
+              onClick={() => submitResumeData(resumedetails)}
+            >
               Create Resume
             </button>
           </form>
@@ -728,38 +750,6 @@ const Home = () => {
       </div>
     </div>
   );
-
-  const handleTecSkillchange = (e) => {
-    const inputValue = e.target.value;
-    setCurrentTecskill(inputValue);
-    const TecSkillArr = inputValue.split(",").map((skill) => skill.trim());
-    setCurrentSplitTec(splitTecSkill);
-  };
-
-  const userObject = () => {
-    const details = {
-      name: fullName,
-      email: mail,
-    };
-    const contact = {
-      place: address,
-      state: state,
-      mobile: phno,
-      email: mail,
-      linkIn: linkedin,
-      gHub: github,
-    };
-    const education = {
-      qualifa: qualif1,
-      qualifaname: qualif1name,
-      qualifabr: qualif1br,
-      qualifamk: qualif1mk,
-      qualifb: qualif2,
-      qualifbname: qualif2name,
-      qualifbbr: qualif2br,
-      qualifbmk: qualif2mk,
-    };
-  };
 };
 
 export default Home;

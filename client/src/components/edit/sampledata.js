@@ -1,4 +1,4 @@
-const sampleData = {
+const dataVal = {
   details: {
     name: "John Doe",
     email: "johndoe@gmail.com",
@@ -69,4 +69,4 @@ const sampleData = {
   },
 };
 
-export default sampleData;
+export default dataVal;

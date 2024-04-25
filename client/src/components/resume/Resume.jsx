@@ -1,19 +1,31 @@
 import React from "react";
 import ErrorPage from "../error/ErrorPage";
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
 import styles from "./styles.module.css";
 import { useLocation } from "react-router-dom";
 import { formToJSON } from "axios";
 
 const Resume = () => {
-  const handlePrint = () => alert("Print Successful!");
+  const componentRef = useRef();
   const location = useLocation();
   const { formData } = location.state;
   console.log(formData);
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    documentTitle: `${formData.details.name} Resume`,
+    options: {
+      margin: 100,
+      padding: 0,
+      overflow: "hidden",
+    },
+    onAfterPrint: () => alert("Print Successful!"),
+  });
 
   return (
     <>
       <main className={styles.container}>
-        <div className={styles.resume}>
+        <div className={styles.resume} ref={componentRef}>
           <div className={styles.header}>
             <div className={styles.canName}>
               <p>{formData.details.name}</p>
@@ -133,7 +145,9 @@ const Resume = () => {
             </div>
           </div>
         </div>
-        <button onClick={handlePrint}>Print Page</button>
+        <button className={styles.printBtn} onClick={handlePrint}>
+          Print Resume
+        </button>
       </main>
     </>
   );
