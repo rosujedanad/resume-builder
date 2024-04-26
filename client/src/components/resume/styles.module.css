@@ -82,10 +82,12 @@
 }
 
 .resume {
-  margin-top: 100px;
+  margin: 0px;
+  padding: 0px;
   width: 800px;
   height: 1134.29px;
   background-color: white;
+  overflow: hidden;
 }
 
 .header {
@@ -273,4 +275,36 @@
   margin-top: 0px;
   margin-bottom: -1px;
   margin-left: 12px;
+}
+
+.printBtn {
+  margin-top: 20px;
+  width: 175px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  outline: none;
+  background-color: rgb(32, 98, 126);
+  border: none;
+  color: #f5f5f5;
+  font-family: "Poppins";
+  font-size: 16px;
+  font-weight: 300px;
+  border-radius: 7px;
+}
+
+.printBtn:hover {
+  transition: 0.3s;
+  margin-top: 20px;
+  width: 175px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+  outline: none;
+  background-color: rgb(148, 197, 204);
+  border: none;
+  color: #f5f5f5;
+  font-family: "Poppins";
+  font-size: 16px;
+  font-weight: 300px;
+  border-radius: 7px;
 }
