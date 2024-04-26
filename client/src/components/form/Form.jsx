@@ -41,6 +41,10 @@ const Home = () => {
 
   const token = localStorage.getItem("token");
   const userid = localStorage.getItem("userid");
+  const {user} = location.state;
+  console.log("user in form", user);
+  console.log("resumecount", user.resumecount+1);
+  
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -101,7 +105,7 @@ const Home = () => {
     };
 
     let resumedetails = formData;
-    resumedetails = { userID: userid, resumeID: "1", ...resumedetails };
+    resumedetails = { userID: userid, resumeID: `${user.resumecount+1}`, ...resumedetails };
 
     const submitResumeData = async (resumedetails) => {
       try {
@@ -131,6 +135,16 @@ const Home = () => {
         const updatedResumeDetailsJSON = JSON.stringify(updatedResumeDetails);
         console.log("Updated resumedetails:", updatedResumeDetailsJSON);
 
+          const updaterescount = await axios.patch(
+            "http://localhost:3000/updateResumeCount",
+            { userid },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log("Response of rescount:", updaterescount.data);
         // Assuming `resumeData` is defined elsewhere
         // updatedResumeDetails && <Resume foormData={updatedResumeDetails} />;
         //if(resumeData){navigate("/resume", { state: {resumeData }});}

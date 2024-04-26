@@ -1,9 +1,15 @@
 import React,{ useState } from 'react';
 import styles from './styles.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Resumeblock from '../resumeblock/Resumeblock';
 
 function Homepage() {
+
+  const location = useLocation();
+
+  const {user} = location.state;
+  console.log("user", user);
+
   const navigate= useNavigate();
   // const [resumeCount, setResumeCount] = useState(0);
 
@@ -18,7 +24,7 @@ function Homepage() {
   //   }
   //   return blocks;
   // };
-  const resumeCount = 6;
+  const resumeCount = user.resumecount;
   const calculateGrid = (count) => {
     if (count === 1) {
       return '1fr';
@@ -39,7 +45,7 @@ function Homepage() {
         <img className={styles.template} src="../../src/assets/template.jpeg" alt="illustration"/>
         <div className={styles.rightcontainer}>
           <div className={styles.createbutton}>
-            <button  onClick={() => navigate("/Form")} className={styles.cre_button}>
+            <button  onClick={() => navigate("/form",{ state: { user } })} className={styles.cre_button}>
             <img src="../../src/assets/plus.png" alt="plus sign"/>
             <p>create resume</p>
             </button>

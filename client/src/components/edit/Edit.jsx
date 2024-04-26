@@ -5,28 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import dataVal from "./sampledata";
+// import dataVal from "./sampledata";
 
 const EditPage = () => {
-  let data;
-  const getdata = async () => {
-    const user = "87654323456";
-    const data = await axios.get(
-      "http://localhost:3000/viewResume",
-      { params: { userid: user } },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    console.log("databyid", data);
-  };
-  getdata();
-  const sampleData = JSON.stringify(data);
-  console.log("sample", sampleData);
-  const navigate = useNavigate();
   const location = useLocation();
+  let {data} = location.state;
+  console.log("data in edit", data);
+  const dataVal = data;
+  const navigate = useNavigate();
+  
   const [fullName, setFullName] = useState(dataVal.details.name);
   const [address, setCurrentAddress] = useState(dataVal.contact.place);
   const [state, setCurrentState] = useState(dataVal.contact.state);

@@ -23,6 +23,19 @@ exports.signIn = async (req, res) => {
   }
 };
 
+exports.updateResumeCount = async (req, res) => {
+  try {
+    console.log(req.body);
+    const key = req.body;
+    console.log("key", key);
+    const newExample = await Service.updateResumeCount(key.userid);
+    res.json(newExample);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+
 exports.createResume = async (req, res) => {
   try {
     console.log(req.body);
@@ -43,8 +56,9 @@ exports.viewResume = async (req,res) => {
   try {
     console.log("working")
     const userid = req.query.userid;
-    console.log(userid,"userid")
-    const resumeDetails = await Service.viewResume(userid);
+    const resumeid = req.query.resumeid;
+    console.log(userid,"userid",resumeid,"resumeid")
+    const resumeDetails = await Service.viewResume(userid,resumeid);
     if(!resumeDetails) {
       return res.status(404).json({error : "Resume not found"})
     }
