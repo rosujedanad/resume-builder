@@ -7,6 +7,7 @@ import {
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Form, useNavigate } from "react-router-dom";
+import Home from "../form/Form";
 
 function Signin() {
   const [user, setUser] = useState([]);
@@ -28,15 +29,15 @@ function Signin() {
         );
         localStorage.setItem("token", codeResponse.access_token);
         setProfile(response.data);
-        console.log("User Profile:", response);
+        console.log("User Profile:", response.data.body);
         const userid = response.data.body.userid;
         localStorage.setItem("userid", userid);
         console.log("userid", userid);
         console.log('codetoken', codeResponse.access_token);
-        codeResponse.access_token && <Form token={codeResponse.access_token}/>;
+        const user = response.data.body;
 
         // Navigate after successful login and profile retrieval
-        navigate("/form",{ state: { token } }); // Replace with your desired route after login
+        navigate("/homepage",{ state: { user } }); // Replace with your desired route after login
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
