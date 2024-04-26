@@ -1,13 +1,35 @@
 
 .resublock {
-    width: 180px; /* Adjust the width as needed */
-    height: 180px; /* Adjust the height as needed */
-    background-color: #0d41589e;
-    border-radius: 20px; /* Apply border radius for consistency */
-    margin: 20px; /* Add margin for spacing between blocks */
+    width: 140px;
+    height: 180px; 
+    background-color:#1f5369fc; 
+    border-radius: 20px; 
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    color: #fff; /* Text color */
-  }
-  
+    color: #fff;
+    font-size:18px;
+    margin-left:60px;
+    margin-top:50px;
+    position: relative;
+}
+
+.editbutton{
+  background-color: transparent;
+  border:none;
+  text-decoration: underline;
+  color: #fff;
+  font-size: 13px;
+  position: absolute;
+  bottom: 12px; 
+  transform: translateY(50%);
+  cursor: pointer;
+}
+
+.resublock > img{
+  width:140px;
+  height:110px;
+  border-radius: 10px; 
+}
