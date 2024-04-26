@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-// import sampleData from "./sampledata";
-import Resume from "../resume/Resume";
+import dataVal from "./sampledata";
 
 const EditPage = () => {
   let data;
@@ -28,38 +27,38 @@ const EditPage = () => {
   console.log("sample", sampleData);
   const navigate = useNavigate();
   const location = useLocation();
-  const [fullName, setFullName] = useState(sampleData.details.name);
-  const [address, setCurrentAddress] = useState(sampleData.contact.place);
-  const [state, setCurrentState] = useState(sampleData.contact.state);
-  const [phno, setCurrentPhno] = useState(sampleData.contact.mobile);
-  const [mail, setCurrentEmail] = useState(sampleData.contact.email);
-  const [qualif1, setCurrentQualif1] = useState(
-    sampleData.education.ed2.qualif
-  );
+  const [fullName, setFullName] = useState(dataVal.details.name);
+  const [address, setCurrentAddress] = useState(dataVal.contact.place);
+  const [state, setCurrentState] = useState(dataVal.contact.state);
+  const [phno, setCurrentPhno] = useState(dataVal.contact.mobile);
+  const [mail, setCurrentEmail] = useState(dataVal.contact.email);
+  const [qualif1, setCurrentQualif1] = useState(dataVal.education.ed1.qualif);
   const [qualif1name, setCurrentQualif1Name] = useState(
-    sampleData.education.ed2.school
+    dataVal.education.ed1.institute
   );
   const [qualif1br, setCurrentQualif1Branch] = useState(
-    sampleData.education.ed2.stream
+    dataVal.education.ed1.department
   );
   const [qualif1mk, setCurrentQualif1Mark] = useState(
-    sampleData.education.ed2.percentage
+    dataVal.education.ed2.cgpa
   );
-  const [qualif2, setCurrentQualif2] = useState(
-    sampleData.education.ed1.qualif
-  );
+  const [qualif2, setCurrentQualif2] = useState(dataVal.education.ed2.qualif);
   const [qualif2name, setCurrentQualif2Name] = useState(
-    sampleData.education.ed1.college
+    dataVal.education.ed2.institute
   );
   const [qualif2br, setCurrentQualif2Branch] = useState(
-    sampleData.education.ed1.department
+    dataVal.education.ed1.department
   );
   const [qualif2mk, setCurrentQualif2Mark] = useState(
-    sampleData.education.ed1.cgpa
+    dataVal.education.ed1.cgpa
   );
-  const [tecskill, setCurrentTecskill] = useState();
+  const [tecskill, setCurrentTecskill] = useState(
+    dataVal.skills.technical.join(", ")
+  );
   const [splitTecSkill, setCurrentSplitTec] = useState([]);
-  const [sofskill, setCurrentSofskill] = useState();
+  const [sofskill, setCurrentSofskill] = useState(
+    dataVal.skills.soft.join(", ")
+  );
   const [linkedin, setCurrentLinkedin] = useState();
   const [github, setCurrentGithub] = useState();
   const [loading, setLoading] = useState(false);
@@ -272,17 +271,7 @@ const EditPage = () => {
         <div className={styles.boxdet}></div>
         <div className="boxmain">
           <div className={styles.titlebox}>
-            <h1 className={styles.Mtitle}>Enter your credentials</h1>
-          </div>
-          <div className={styles.desctext}>
-            <p className={styles.desc}>
-              <em>
-                "Begin now, for every journey starts with a single step..."
-              </em>
-              <br></br>
-              <br></br>Please fill in your details to generate your customised
-              resume.
-            </p>
+            <h1 className={styles.Mtitle}>Edit your resume</h1>
           </div>
 
           <form
