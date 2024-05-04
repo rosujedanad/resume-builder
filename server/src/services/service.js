@@ -79,6 +79,26 @@ exports.signin = async (token) => {
   }
 };
 
+exports.updateResumeCount = async (userid) => {
+  try {
+    const user = await userData.findOne({ UserID: userid });
+    let resumeCount = user.ResumeCount;
+    resumeCount += 1;
+    await userData.findOneAndUpdate({ UserID: userid }, { ResumeCount: resumeCount });
+    return {
+      statusCode: 200,
+      body: { message: "Resume count updated successfully" },
+    };
+  } catch (error) {
+    console.error("There was a problem with your fetch operation:", error);
+
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: error.message }),
+    };
+  }
+};
+
 exports.CreateResume = async (details) => {
   try {
     console.log("details", details);
@@ -180,9 +200,9 @@ exports.CreateResume = async (details) => {
   }
 };
 
-exports.viewResume = async (userid) => {
+exports.viewResume = async (userid,resumeid) => {
   try {
-    let contact = await contactData.findOne({ UserID: userid });
+    let contact = await contactData.findOne({ UserID: userid , resumeID: resumeid});
     details = {
       name: contact.name,
       email: contact.email,
@@ -198,14 +218,16 @@ exports.viewResume = async (userid) => {
 
     let eduDatas = await eduData.findOne({ UserID: userid });
 
-    const education = eduDatas.education.map((ed, index) => ({
-      [`ed${index + 1}`]: {
+    const education = {}; // Initialize an empty object
+    
+    eduDatas.education.forEach((ed, index) => {
+      education[`ed${index + 1}`] = { // Assign to the education object using dynamic key
         qualif: ed.qualif,
         institute: ed.institute,
         department: ed.department,
         cgpa: ed.cgpa,
-      },
-    }));
+      };
+    });
 
     let skills = await skillData.findOne({ UserID: userid });
     skills = {
@@ -246,8 +268,8 @@ exports.viewResume = async (userid) => {
     );
 
     const resumeDetails = {
-      userID: "userid",
-      resumeID: "987654",
+      userID: userid,
+      resumeID: resumeid,
       details,
       contact,
       education,

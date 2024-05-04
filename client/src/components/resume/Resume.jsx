@@ -47,7 +47,7 @@ const Resume = () => {
             <div className={styles.detCol}>
               <div className={styles.colLeft}>
                 <div className={styles.leftFields}>
-                  <div className={styles.education}>
+                  {/* <div className={styles.education}>
                     <h2 className={styles.resTitle}>Education</h2>
                     <h3 className={styles.edTitle}>
                       {formData.education.hss.school}
@@ -73,7 +73,7 @@ const Resume = () => {
                         {formData.education.ug.cgpa}
                       </span>
                     </h3>
-                  </div>
+                  </div> */}
                   <div className={styles.skills}>
                     <h2 className={styles.resTitle}>Skills</h2>
                     <h3 className={styles.skTitle}>Technical Skills:</h3>
