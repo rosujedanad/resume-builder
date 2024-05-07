@@ -138,7 +138,7 @@ const EditPage = () => {
     };
 
     let resumedetails = formData;
-    resumedetails = { userID: userid, resumeID: "1", ...resumedetails };
+    resumedetails = { userID: userid, resumeID: data.resumeID, ...resumedetails };
 
     const submitResumeData = async (resumedetails) => {
       try {
@@ -153,10 +153,15 @@ const EditPage = () => {
 
         const updatedResumeDetails = { ...resumedetails, about: { about } };
         setResumeData(updatedResumeDetails);
-        const response = await axios.post(
-          "http://localhost:3000/createResume",
+        console.log("up",updatedResumeDetails)
+        const response = await axios.patch(
+          "http://localhost:3000/updateResume",
           updatedResumeDetails,
           {
+            params: {
+              userid: localStorage.getItem("userid"),
+              resumeid: updatedResumeDetails.resumeID,
+            },
             headers: {
               "Content-Type": "application/json",
             },
@@ -634,7 +639,6 @@ const EditPage = () => {
                       name={`intCompName${index}`}
                       value={intern.intCompName}
                       className={styles.fields1}
-                      required
                       onChange={(e) => handleUpdateInt(e, index)}
                     />
                   </div>
@@ -791,7 +795,7 @@ const EditPage = () => {
               </div>
             </div>
             <button className={styles.mbutton} onClick={handleFormSubmit}>
-              Create Resume
+              Update Resume
             </button>
           </form>
         </div>

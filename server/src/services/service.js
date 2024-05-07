@@ -202,6 +202,7 @@ exports.CreateResume = async (details) => {
 
 exports.viewResume = async (userid,resumeid) => {
   try {
+    console.log("resumeid", resumeid);
     let contact = await contactData.findOne({ UserID: userid , resumeID: resumeid});
     details = {
       name: contact.name,
@@ -216,7 +217,7 @@ exports.viewResume = async (userid,resumeid) => {
       github: contact.github,
     };
 
-    let eduDatas = await eduData.findOne({ UserID: userid });
+    let eduDatas = await eduData.findOne({ UserID: userid , resumeID: resumeid});
 
     const education = {}; // Initialize an empty object
     
@@ -229,13 +230,13 @@ exports.viewResume = async (userid,resumeid) => {
       };
     });
 
-    let skills = await skillData.findOne({ UserID: userid });
+    let skills = await skillData.findOne({ UserID: userid , resumeID: resumeid});
     skills = {
       technical: skills.technical,
       soft: skills.soft,
     };
 
-    let projectsData = await projectData.findOne({ UserID: userid });
+    let projectsData = await projectData.findOne({ UserID: userid , resumeID: resumeid});
     const projects = projectsData.projects.map((project, index) => ({
       [`project${index + 1}`]: {
         title: project.title,
@@ -245,7 +246,7 @@ exports.viewResume = async (userid,resumeid) => {
       },
     }));
 
-    let internshipsData = await internData.findOne({ UserID: userid });
+    let internshipsData = await internData.findOne({ UserID: userid , resumeID: resumeid});
     const internships = internshipsData.internships.map(
       (internship, index) => ({
         [`internships${index + 1}`]: {
@@ -257,7 +258,7 @@ exports.viewResume = async (userid,resumeid) => {
       })
     );
 
-    let extraCurricularData = await activityData.findOne({ UserID: userid });
+    let extraCurricularData = await activityData.findOne({ UserID: userid , resumeID: resumeid});
     const extraCurricular = extraCurricularData.extraCurricular.map(
       (activity, index) => ({
         [`activity${index + 1}`]: {
@@ -278,6 +279,7 @@ exports.viewResume = async (userid,resumeid) => {
       internships: Object.assign({}, ...internships),
       extraCurricular: Object.assign({}, ...extraCurricular),
     };
+    console.log("resumeDetails", resumeDetails)
     return resumeDetails;
   } catch (error) {
     console.error(error);
@@ -287,34 +289,40 @@ exports.viewResume = async (userid,resumeid) => {
 
 exports.updateResume = async (userid, updateData) => {
   try {
-    await contactData.findOneAndUpdate({ UserID: userid }, updateData.contact, {
+    console.log("up data",updateData)
+    console.log("up id",updateData.resumeID)
+    await contactData.findOneAndUpdate({ UserID: userid,resumeID:updateData.resumeID }, updateData.details, {
       new: true,
       upsert: true,
     });
-    await eduData.findOneAndUpdate({ UserID: userid }, updateData.education, {
+    await contactData.findOneAndUpdate({ UserID: userid ,resumeID:updateData.resumeID}, updateData.contact, {
       new: true,
       upsert: true,
     });
-    await skillData.findOneAndUpdate({ UserID: userid }, updateData.skills, {
+    await eduData.findOneAndUpdate({ UserID: userid ,resumeID:updateData.resumeID}, updateData.education, {
+      new: true,
+      upsert: true,
+    });
+    await skillData.findOneAndUpdate({ UserID: userid ,resumeID:updateData.resumeID}, updateData.skills, {
       new: true,
       upsert: true,
     });
     await projectData.findOneAndUpdate(
-      { UserID: userid },
+      { UserID: userid ,resumeID:updateData.resumeID},
       updateData.projects,
       { new: true, upsert: true }
     );
     await internData.findOneAndUpdate(
-      { UserID: userid },
+      { UserID: userid ,resumeID:updateData.resumeID},
       updateData.internships,
       { new: true, upsert: true }
     );
     await activityData.findOneAndUpdate(
-      { UserID: userid },
+      { UserID: userid,resumeID:updateData.resumeID },
       updateData.extraCurricular,
       { new: true, upsert: true }
     );
-
+      console.log("Resume updated successfully");
     return { message: "Resume updated successfully" };
   } catch (error) {
     console.log(error);
