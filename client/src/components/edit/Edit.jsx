@@ -9,11 +9,36 @@ import { useLocation } from "react-router-dom";
 
 const EditPage = () => {
   const location = useLocation();
-  let {data} = location.state;
+  let { data } = location.state;
   console.log("data in edit", data);
   const dataVal = data;
+  let projKeys = Object.keys(dataVal.projects);
+  let projNum = projKeys.length;
+  console.log(dataVal.extraCurricular.activity1.role);
   const navigate = useNavigate();
-  
+  const initialProjectState = Object.values(dataVal.projects).map(
+    (project) => ({
+      prName: project.title,
+      prDesc: project.description,
+    })
+  );
+
+  const initialInternState = Object.values(dataVal.internships).map(
+    (intern) => ({
+      intCompName: intern.company,
+      intDur: intern.duration,
+      intDesc: intern.description,
+    })
+  );
+
+  const initialExtraState = Object.values(dataVal.extraCurricular).map(
+    (activity) => ({
+      ActName: activity.name,
+      // ActRole: activity.role,
+      ActDesc: activity.description,
+    })
+  );
+
   const [fullName, setFullName] = useState(dataVal.details.name);
   const [address, setCurrentAddress] = useState(dataVal.contact.place);
   const [state, setCurrentState] = useState(dataVal.contact.state);
@@ -46,8 +71,8 @@ const EditPage = () => {
   const [sofskill, setCurrentSofskill] = useState(
     dataVal.skills.soft.join(", ")
   );
-  const [linkedin, setCurrentLinkedin] = useState();
-  const [github, setCurrentGithub] = useState();
+  const [linkedin, setCurrentLinkedin] = useState(dataVal.contact.linkedin);
+  const [github, setCurrentGithub] = useState(dataVal.contact.github);
   const [loading, setLoading] = useState(false);
   const [resumeData, setResumeData] = useState(null);
 
@@ -70,8 +95,18 @@ const EditPage = () => {
         github: github,
       },
       education: {
-        ug: { college: qualif1name, department: qualif1br, cgpa: qualif1mk },
-        hss: { school: qualif2name, stream: qualif2br, percentage: qualif2mk },
+        ed1: {
+          qualif: qualif1,
+          institute: qualif1name,
+          department: qualif1br,
+          cgpa: qualif1mk,
+        },
+        ed2: {
+          qualif: qualif2,
+          institute: qualif2name,
+          department: qualif2br,
+          cgpa: qualif2mk,
+        },
       },
       skills: {
         technical: tecskill.split(","),
@@ -147,9 +182,12 @@ const EditPage = () => {
 
   //Adding Project
 
-  const [ProjInfo1, setProjInfo1] = useState([{ prName: "", prDesc: "" }]);
-  const handleAddProj = () =>
-    setProjInfo1([...ProjInfo1, { prName: "", prDesc: "" }]);
+  const [ProjInfo1, setProjInfo1] = useState(initialProjectState);
+  const handleAddProj = () => {
+    // Add a new project with empty values
+    const newProject = { prName: "", prDesc: "" };
+    setProjInfo1([...ProjInfo1, newProject]);
+  };
 
   //Handling Project
   const handleRemoveProj = (index) => {
@@ -166,14 +204,11 @@ const EditPage = () => {
 
   //Adding Internship
 
-  const [InternInfo, setInternInfo] = useState([
-    { intCompName: "", intDur: "", intDesc: "" },
-  ]);
-  const handleAddInt = () =>
-    setInternInfo([
-      ...InternInfo,
-      { intCompName: "", intDur: "", intDesc: "" },
-    ]);
+  const [InternInfo, setInternInfo] = useState(initialInternState);
+  const handleAddInt = () => {
+    const newIntern = { intCompName: "", intDur: "", intDesc: "" };
+    setInternInfo([...InternInfo, newIntern]);
+  };
 
   //Handling Internship
   const handleRemoveInt = (index) => {
@@ -189,11 +224,12 @@ const EditPage = () => {
   };
 
   //Adding Cocurricular Activities
-  const [ActInfo, setActInfo] = useState([
-    { ActName: "", ActRole: "", ActDesc: "" },
-  ]);
-  const handleAddAct = () =>
-    setActInfo([...ActInfo, { ActName: "", ActRole: "", ActDesc: "" }]);
+  const [ActInfo, setActInfo] = useState(initialExtraState);
+  const handleAddAct = () => {
+    // ActRole to be added in newAct
+    const newAct = { ActName: "", ActDesc: "" };
+    setActInfo([...ActInfo, newAct]);
+  };
 
   //Handling Cocurricular Activities
   const handleRemoveAct = (index) => {
@@ -529,26 +565,34 @@ const EditPage = () => {
               {ProjInfo1.map((project, index) => (
                 <div className={styles.projCont} key={index}>
                   <div className="projectName">
-                    <label htmlFor="prname" className={styles.heading}>
+                    <label
+                      htmlFor={`prname${index}`}
+                      className={styles.heading}
+                    >
                       Project Name:
                     </label>
                     <input
-                      id="prname"
+                      id={`prname${index}`}
                       type="text"
-                      name="prName"
+                      name={`prName${index}`}
                       className={styles.fields1}
+                      value={project.prName}
                       required
                       onChange={(e) => handleUpdateProj(e, index)}
                     />
                   </div>
                   <div className={styles.projDesc}>
-                    <label htmlFor="prdesc" className={styles.heading}>
+                    <label
+                      htmlFor={`prdesc${index}`}
+                      className={styles.heading}
+                    >
                       Description:
                     </label>
                     <textarea
-                      id="prdesc"
-                      name="prDesc"
+                      id={`prdesc${index}`}
+                      name={`prDesc${index}`}
                       className={styles.parabox}
+                      value={project.prDesc}
                       required
                       onChange={(e) => handleUpdateProj(e, index)}
                     ></textarea>
@@ -578,38 +622,50 @@ const EditPage = () => {
               {InternInfo.map((intern, index) => (
                 <div className={styles.projCont} key={index}>
                   <div className="intComp">
-                    <label htmlFor="intCompName" className={styles.heading}>
+                    <label
+                      htmlFor={`intcompname${index}`}
+                      className={styles.heading}
+                    >
                       Company Name:
                     </label>
                     <input
-                      id="intCompName"
+                      id={`intcompname${index}`}
                       type="text"
-                      name="intCompName"
+                      name={`intCompName${index}`}
+                      value={intern.intCompName}
                       className={styles.fields1}
                       required
                       onChange={(e) => handleUpdateInt(e, index)}
                     />
                   </div>
                   <div className="duration">
-                    <label htmlFor="intDur" className={styles.heading}>
+                    <label
+                      htmlFor={`intdur${index}`}
+                      className={styles.heading}
+                    >
                       Duration:
                     </label>
                     <input
-                      id="intDur"
+                      id={`intdur${index}`}
                       type="text"
-                      name="intDur"
+                      name={`intDur${index}`}
                       className={styles.fields1}
+                      value={intern.intDur}
                       required
                       onChange={(e) => handleUpdateInt(e, index)}
                     />
                   </div>
                   <div className={styles.projDesc}>
-                    <label htmlFor="intDesc" className={styles.heading}>
+                    <label
+                      htmlFor={`intdesc${index}`}
+                      className={styles.heading}
+                    >
                       Description:
                     </label>
                     <textarea
-                      id="intDesc"
-                      name="intDesc"
+                      id={`intdesc${index}`}
+                      name={`intDesc${index}`}
+                      value={intern.intDesc}
                       className={styles.parabox}
                       required
                       onChange={(e) => handleUpdateInt(e, index)}
@@ -644,17 +700,22 @@ const EditPage = () => {
               {ActInfo.map((act, index) => (
                 <div className={styles.projCont} key={index}>
                   <div className="actname">
-                    <label htmlFor="actname" className={styles.heading}>
+                    <label
+                      htmlFor={`actname${index}`}
+                      className={styles.heading}
+                    >
                       Organization / Activity:
                     </label>
                     <input
-                      id="actname"
+                      id={`actname${index}`}
                       type="text"
-                      name="ActName"
+                      name={`ActName${index}`}
+                      value={act.ActName}
                       className={styles.fields1}
                       onChange={(e) => handleUpdateAct(e, index)}
                     />
                   </div>
+                  {/* Extracurricular Activity Role to be defined in backend */}
                   <div className="actrole">
                     <label htmlFor="actrole" className={styles.heading}>
                       Role:
@@ -668,13 +729,17 @@ const EditPage = () => {
                     />
                   </div>
                   <div className={styles.projDesc}>
-                    <label htmlFor="actdesc" className={styles.heading}>
+                    <label
+                      htmlFor={`actdesc${index}`}
+                      className={styles.heading}
+                    >
                       Description:
                     </label>
                     <textarea
-                      id="actdesc"
-                      name="ActDesc"
+                      id={`actdesc${index}`}
+                      name={`ActDesc${index}`}
                       className={styles.parabox}
+                      value={act.ActDesc}
                       onChange={(e) => handleUpdateAct(e, index)}
                     ></textarea>
                   </div>
@@ -733,38 +798,6 @@ const EditPage = () => {
       </div>
     </div>
   );
-
-  const handleTecSkillchange = (e) => {
-    const inputValue = e.target.value;
-    setCurrentTecskill(inputValue);
-    const TecSkillArr = inputValue.split(",").map((skill) => skill.trim());
-    setCurrentSplitTec(splitTecSkill);
-  };
-
-  const userObject = () => {
-    const details = {
-      name: fullName,
-      email: mail,
-    };
-    const contact = {
-      place: address,
-      state: state,
-      mobile: phno,
-      email: mail,
-      linkIn: linkedin,
-      gHub: github,
-    };
-    const education = {
-      qualifa: qualif1,
-      qualifaname: qualif1name,
-      qualifabr: qualif1br,
-      qualifamk: qualif1mk,
-      qualifb: qualif2,
-      qualifbname: qualif2name,
-      qualifbbr: qualif2br,
-      qualifbmk: qualif2mk,
-    };
-  };
 };
 
 export default EditPage;
