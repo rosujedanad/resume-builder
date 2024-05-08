@@ -138,7 +138,11 @@ const EditPage = () => {
     };
 
     let resumedetails = formData;
-    resumedetails = { userID: userid, resumeID: data.resumeID, ...resumedetails };
+    resumedetails = {
+      userID: userid,
+      resumeID: data.resumeID,
+      ...resumedetails,
+    };
 
     const submitResumeData = async (resumedetails) => {
       try {
@@ -153,7 +157,7 @@ const EditPage = () => {
 
         const updatedResumeDetails = { ...resumedetails, about: { about } };
         setResumeData(updatedResumeDetails);
-        console.log("up",updatedResumeDetails)
+        console.log("up", updatedResumeDetails);
         const response = await axios.patch(
           "http://localhost:3000/updateResume",
           updatedResumeDetails,
@@ -202,9 +206,16 @@ const EditPage = () => {
   };
   const handleUpdateProj = (e, index) => {
     const { name, value } = e.target;
-    const ProjList = [...ProjInfo1];
-    ProjList[index][name] = value;
-    setProjInfo1(ProjList);
+    const propName = name.substring(0, name.indexOf(index));
+    const updatedProjects = [...ProjInfo1];
+
+    if (propName === "prName") {
+      updatedProjects[index].prName = value;
+    } else if (propName === "prDesc") {
+      updatedProjects[index].prDesc = value;
+    }
+
+    setProjInfo1(updatedProjects);
   };
 
   //Adding Internship
@@ -223,9 +234,18 @@ const EditPage = () => {
   };
   const handleUpdateInt = (e, index) => {
     const { name, value } = e.target;
-    const IntList = [...InternInfo];
-    IntList[index][name] = value;
-    setInternInfo(IntList);
+    const intPropName = name.substring(0, name.indexOf(index));
+    const updatedInt = [...InternInfo];
+
+    if (intPropName === "intCompName") {
+      updatedInt[index].intCompName = value;
+    } else if (intPropName === "intDur") {
+      updatedInt[index].intDur = value;
+    } else if (intPropName === "intDesc") {
+      updatedInt[index].intDesc = value;
+    }
+
+    setInternInfo(updatedInt);
   };
 
   //Adding Cocurricular Activities
@@ -244,9 +264,16 @@ const EditPage = () => {
   };
   const handleUpdateAct = (e, index) => {
     const { name, value } = e.target;
-    const ActList = [...ActInfo];
-    ActList[index][name] = value;
-    setActInfo(ActList);
+    const actPropName = name.substring(0, name.indexOf(index));
+    const updatedAct = [...ActInfo];
+
+    if (actPropName === "ActName") {
+      updatedAct[index].ActName = value;
+    } else if (actPropName === "ActDesc") {
+      updatedAct[index].ActDesc = value;
+    }
+
+    setActInfo(updatedAct);
   };
 
   //👇🏻 Renders the Loading component you submit the form
